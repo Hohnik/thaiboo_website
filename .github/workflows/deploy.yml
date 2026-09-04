@@ -30,8 +30,11 @@ jobs:
       - run: npm ci
       # Ermittelt die Pages-URL (Unterordner bei user.github.io/repo, sonst die eigene Domain)
       # und schaltet GitHub Pages ein, falls noch nicht geschehen.
+      # Schlägt fehl, solange GitHub Pages nicht aktiviert ist (Settings → Pages → Source: GitHub Actions);
+      # der Build läuft dann trotzdem weiter, nur das Veröffentlichen wartet auf die Aktivierung.
       - id: pages
         uses: actions/configure-pages@v5
+        continue-on-error: true
         with:
           enablement: true
       - run: npm run build
