@@ -1,0 +1,142 @@
+{
+  "home": {
+    "hero": {
+      "eyebrow": "Thai-Restaurant · Moosburg an der Isar",
+      "title": "Frisch aus dem Wok –",
+      "titleAccent": "Thai-Küche mitten in Moosburg.",
+      "lead": "Currys, Wok-Gerichte, Suppen und Bubble Tea – frisch zubereitet, zum Genießen bei uns oder zum Mitnehmen. Einfach anrufen und vorbestellen.",
+      "image": "/assets/images/hero-gericht.jpg",
+      "imageAlt": "Dampfendes Wok-Gericht mit Duftreis, Gemüse und Salat auf einem Teller",
+      "badgeDish": 17,
+      "badgeLabel": "Beliebt: Pad Thai"
+    },
+    "infoCards": {
+      "addressHint": "Direkt an der Landshuter Straße, wenige Gehminuten vom Stadtplatz.",
+      "orderText": "Rufen Sie an, wir bereiten alles frisch zu. Beim Abholen zahlen Sie bequem bar."
+    },
+    "favorites": {
+      "eyebrow": "Unsere Favoriten",
+      "title": "Was unsere Gäste am liebsten bestellen",
+      "intro": "Hausgemachte Klassiker aus Thailand – wahlweise vegetarisch, mit Tofu, Hähnchen, Rind, Ente, Garnelen oder Fisch.",
+      "dishes": [17, 13, 35, 38]
+    },
+    "about": {
+      "eyebrow": "Über uns",
+      "title": "Mit Leidenschaft für authentische thailändische Küche",
+      "text": "Willkommen im Thaiboo! Unser erfahrenes Küchenteam bereitet jedes Gericht mit frischen Zutaten und traditionellen Techniken zu – für ein authentisches Geschmackserlebnis in gemütlicher Atmosphäre.",
+      "bullets": [
+        "Frisch gekocht – vom scharfen Curry bis zum knusprigen Wok-Gemüse",
+        "Sie wählen: vegetarisch, Tofu, Hähnchen, Rind, Ente, Garnelen oder Fisch",
+        "Zum Hierbleiben, zum Mitnehmen oder als Catering für Ihre Feier"
+      ],
+      "image": "/assets/images/koch.jpg",
+      "imageAlt": "Unser Koch im Thaiboo-Poloshirt vor einer Bambuswand"
+    },
+    "teasers": [
+      {
+        "eyebrow": "Neu im Thaiboo",
+        "title": "Bubble Tea",
+        "text": "Fruchtige Tee- und Soda-Mixes, cremige Milchtees und Latte – mit Tapioka-Perlen, frisch gemixt. Ab 5,00 €.",
+        "image": "/assets/images/bubble-tea.png",
+        "imageAlt": "Zwei Bubble Teas mit Tapioka-Perlen",
+        "cutout": true,
+        "link": "/speisekarte/#bubble-tea",
+        "linkLabel": "Alle Sorten"
+      },
+      {
+        "eyebrow": "Für Ihre Feier",
+        "title": "Catering",
+        "text": "Hochzeit, Firmenfeier oder Geburtstag: Wir stellen mit Ihnen das passende Thai-Buffet zusammen und liefern es frisch.",
+        "image": "/assets/images/catering-buffet-1.jpg",
+        "imageAlt": "Catering-Buffet mit Wok-Gemüse, Nudeln und Currys in Warmhaltebehältern",
+        "cutout": false,
+        "link": "/ueber-uns/#catering",
+        "linkLabel": "Mehr erfahren"
+      }
+    ],
+    "gallery": {
+      "eyebrow": "Einblicke",
+      "title": "Ein Blick ins Thaiboo",
+      "images": [
+        { "image": "/assets/images/gastraum.jpg", "alt": "Gastraum mit dunklen Holztischen, Fensterfront und goldener Buddha-Statue" },
+        { "image": "/assets/images/galerie-pad-thai.jpg", "alt": "Pad Thai mit Sprossen, Limette und geschnitzter Karotte" },
+        { "image": "/assets/images/galerie-buddha-tisch.jpg", "alt": "Buddha-Figur neben Pflanzen und der Speisekarte am Fenstertisch" },
+        { "image": "/assets/images/galerie-teller-reis.jpg", "alt": "Wok-Gericht mit Duftreis, Gemüse und Salatgarnitur" },
+        { "image": "/assets/images/galerie-bubble-tea.jpg", "alt": "Bubble Teas in Mango und Erdbeere mit Tapioka-Perlen" },
+        { "image": "/assets/images/galerie-buddha-orchideen.jpg", "alt": "Goldene Buddha-Statue mit Orchideen" },
+        { "image": "/assets/images/galerie-zwei-teller.jpg", "alt": "Zwei Gerichte mit Reis auf einem weißen Tisch" },
+        { "image": "/assets/images/theke-bubble-tea.jpg", "alt": "Unser Team hinter der Theke bei der Zubereitung von Bubble Tea" }
+      ]
+    },
+    "cta": {
+      "title": "Hunger? Rufen Sie einfach an.",
+      "text": "Wir bereiten Ihre Bestellung frisch zu – zum Abholen oder für einen Tisch bei uns. Bitte beachten Sie: Wir akzeptieren nur Barzahlung."
+    }
+  },
+  "menu": {
+    "title": "Frisch gekocht, ehrlich bepreist.",
+    "lead": "Alle Gerichte bereiten wir frisch zu – gerne auch zum Mitnehmen. Rufen Sie einfach vorher an, dann steht Ihre Bestellung bereit, wenn Sie kommen.",
+    "notice": "Bei Currys, Nudel- und Wok-Gerichten wählen Sie Ihre Hauptzutat – den Preis dafür sehen Sie jeweils oben in der Kategorie. Wir akzeptieren nur Barzahlung.",
+    "legendIntro": "Die Kennzeichnung finden Sie als Ziffern (Zusatzstoffe) und Buchstaben (Allergene) bei den Gerichten. Bei Unverträglichkeiten sprechen Sie uns gerne an – wir beraten Sie.",
+    "cta": {
+      "title": "Bestellung zum Mitnehmen?",
+      "text": "Rufen Sie an und nennen Sie uns einfach die Nummern der Gerichte – wir sagen Ihnen, wann alles fertig ist. Bezahlung bar bei Abholung."
+    }
+  },
+  "about": {
+    "hero": {
+      "title": "Ein Stück Thailand in Moosburg",
+      "lead": "Mit einer Leidenschaft für authentische thailändische Küche bieten wir eine breite Auswahl an Gerichten mit verschiedenen Aromen und Geschmacksrichtungen – in einer warmen, einladenden Atmosphäre.",
+      "image": "/assets/images/gastraum.jpg"
+    },
+    "team": {
+      "eyebrow": "Unser Team",
+      "title": "Gemeinsam schaffen wir unvergessliche Geschmackserlebnisse",
+      "paragraphs": [
+        "Unser Team besteht aus leidenschaftlichen und erfahrenen Köchen, die jede Speise mit viel Liebe und Hingabe zubereiten. Jede und jeder Einzelne trägt dazu bei, dass Sie als Gast ein unvergessliches kulinarisches Erlebnis genießen können.",
+        "Unsere Köche haben jahrelange Erfahrung in der Zubereitung asiatischer Gerichte und legen Wert auf frische, hochwertige Zutaten. Wir sind stolz auf unser Team – und darauf, dass sich jeder Gast bei uns wie zu Hause fühlt."
+      ],
+      "image": "/assets/images/team.jpg",
+      "imageAlt": "Das Thaiboo-Team: vier Personen in weißen und schwarzen Poloshirts vor einer Bambuswand"
+    },
+    "kitchen": {
+      "eyebrow": "Unsere Küche",
+      "title": "Erleben Sie die Aromen Asiens in jedem Bissen",
+      "text": "Ob Sie eine Vorliebe für scharfe thailändische Currys haben, wahlweise mit Reis oder verschiedenen Nudeln, oder lieber gebratenes Gemüse mit Garnelen, Rind, knuspriger Ente, Hähnchen oder Tofu genießen – bei uns finden Sie sicher etwas, das Ihrem Geschmack entspricht.",
+      "bullets": [
+        { "title": "Frisch & hausgemacht", "text": "jedes Gericht wird nach Bestellung zubereitet" },
+        { "title": "Ihre Wahl", "text": "vegetarisch, Tofu, Hähnchen, Rind, Ente, Garnelen oder Fisch" },
+        { "title": "Für unterwegs", "text": "alle Gerichte auch zum Mitnehmen" }
+      ],
+      "image": "/assets/images/koch.jpg",
+      "imageAlt": "Unser Koch mit verschränkten Armen vor einer Bambuswand"
+    },
+    "bubbleTea": {
+      "eyebrow": "Bubble Tea",
+      "title": "Genießen Sie jetzt auch unsere Bubble Teas",
+      "text": "Wir bieten Milchtees, Früchtetees und Soda-Mixes – frisch gemixt mit Tapioka-Perlen. Von Mango über Lychee bis Taro Latte: über zwanzig Sorten ab 5,00 €, auch zum Mitnehmen.",
+      "image": "/assets/images/theke-bubble-tea.jpg",
+      "imageAlt": "Unsere Mitarbeiterinnen bereiten Bubble Tea an der Theke zu"
+    },
+    "catering": {
+      "eyebrow": "Catering",
+      "title": "Thai-Buffet für Ihre Feier",
+      "intro": "Unser Restaurant bietet nicht nur ein unvergessliches kulinarisches Erlebnis in unseren Räumlichkeiten, sondern auch einen Catering-Service für Ihre besonderen Anlässe.",
+      "paragraphs": [
+        "Egal, ob Sie eine Hochzeit, eine Firmenveranstaltung oder eine private Feier planen: Unser erfahrenes Catering-Team stellt mit Ihnen das passende Menü für Ihre Gäste zusammen. Wir verwenden nur beste, frische Zutaten und bereiten alle Gerichte mit viel Liebe und Sorgfalt zu.",
+        "Kontaktieren Sie uns, um mehr über unsere Catering-Angebote zu erfahren – wir helfen Ihnen gerne, Ihre Veranstaltung zu einem vollen Erfolg zu machen."
+      ],
+      "images": [
+        { "image": "/assets/images/catering-buffet-1.jpg", "alt": "Buffet mit Currys, Wok-Gemüse und Nudeln" },
+        { "image": "/assets/images/catering-satay.jpg", "alt": "Satay-Spieße mit geschnitzter Tomatenrose" },
+        { "image": "/assets/images/catering-fruehlingsrollen.jpg", "alt": "Frühlingsrollen und Dips am Buffet" },
+        { "image": "/assets/images/catering-curry.jpg", "alt": "Rotes Curry und Wok-Gemüse in Warmhaltebehältern" }
+      ]
+    }
+  },
+  "contact": {
+    "title": "So erreichen Sie uns",
+    "lead": "Bestellungen, Reservierungen und Fragen zum Catering nehmen wir gerne telefonisch entgegen.",
+    "phoneNote": "Am schnellsten erreichen Sie uns während der Öffnungszeiten. Für Bestellungen zum Mitnehmen nennen Sie uns einfach die Nummern der Gerichte."
+  }
+}

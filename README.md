@@ -49,48 +49,79 @@ Audit der bisherigen Seite (React/CRA-Bundle):
 build.mjs              Build-Skript (Seiten rendern, Bilder erzeugen, Assets kopieren, Dev-Server)
 scripts/check.mjs      Prüft nach dem Build Links, Anker, Meta-Daten und Menü-Daten
 src/
-  data/site.json       Adresse, Telefon, Öffnungszeiten, Zahlungshinweis, Maps-Links
-  data/menu.json       Speisekarte (Kategorien, Gerichte, Preise, Codes, Tags), Extras, Legende
-  data/drinks.json     Bubble Tea und Getränke
+  data/site.json       Adresse, Telefon, Öffnungszeiten, Zahlungshinweis (im CMS editierbar)
+  data/menu.json       Speisekarte: Kategorien, Gerichte, Preise, Codes, Tags, Extras (CMS)
+  data/drinks.json     Bubble Tea und Getränke (CMS)
+  data/content.json    Alle Seitentexte, Favoriten, Kacheln, Galerie (CMS)
+  data/legal.json      Angaben für Impressum & Datenschutz (CMS)
+  data/legend.json     Allergen-/Zusatzstoff-Legende und Icons (technisch)
+  data/config.json     Domain, Koordinaten, Maps-Links (technisch)
   pages/*.js           Eine Datei pro Seite (index, speisekarte, ueber-uns, kontakt, impressum, datenschutz, 404)
   lib/                 Layout (Header/Footer/SEO), Partials (Gericht, Galerie, CTA), Icons, Helfer
   styles/main.css      Design-System (Tokens, Komponenten, responsive, print)
   scripts/main.js      Progressive Enhancement (Status, Nav, Filter, Lightbox, Karte)
   assets/images/       Originalbilder (werden beim Build optimiert)
   assets/fonts/        Fraunces + Inter (variable, woff2)
-public/                Wird 1:1 nach dist/ kopiert (Manifest)
+public/                Wird 1:1 nach dist/ kopiert (Manifest, admin/ = Redaktionsoberfläche)
+docs/CMS-EINRICHTUNG.md  Anleitung: GitHub Pages, Login, Bedienung
 dist/                  Build-Ergebnis – das wird auf den Webspace hochgeladen
 ```
 
-## Inhalte pflegen
+## Inhalte pflegen – ohne Programmierkenntnisse
 
-- **Öffnungszeiten / Telefon / Adresse:** `src/data/site.json`. Zeiten als `[["11:00","15:00"],["17:00","21:00"]]`, Ruhetag = `[]`. Der Live-Status und schema.org lesen dieselben Daten.
-- **Gericht ändern:** `src/data/menu.json`. Preise als Zahl (`9.5`), Codes nur aus der Legende, Tags aus `vegetarisch | scharf | beliebt`. Ein Bild = Dateiname ohne Endung aus `src/assets/images/` (PNG mit Transparenz für Freisteller).
-- **Preise je Hauptzutat** stehen in `priceTable` der Kategorie; Gerichte mit eigenem Preis bekommen `prices`.
-- **Neues Foto:** in `src/assets/images/` legen (JPEG ≤ 1600 px reicht), dann im Template mit `ctx.img('dateiname', { alt, sizes })` verwenden.
-- Danach `npm run build` – die Prüfung `npm run check` meldet kaputte Links oder fehlende Preise.
+Unter **`/admin/`** (z. B. https://thaiboo-moosburg.de/admin/) gibt es eine Redaktionsoberfläche
+([Sveltia CMS](https://sveltiacms.app/)). Der Inhaber meldet sich mit seinem GitHub-Konto an und ändert
+in Formularen:
+
+| Bereich                     | Datei                      | Was sich ändern lässt                                                        |
+| --------------------------- | -------------------------- | ---------------------------------------------------------------------------- |
+| Speisekarte                 | `src/data/menu.json`       | Kategorien, Gerichte, Preise, Preise je Hauptzutat, Kennzeichnung *Vegetarisch / Scharf / Beliebt*, Allergen-Codes, Fotos, Extras |
+| Bubble Tea & Getränke       | `src/data/drinks.json`     | Sorten, Gruppen, Preise                                                      |
+| Öffnungszeiten & Kontakt    | `src/data/site.json`       | Zeiten pro Wochentag (leer = Ruhetag), Telefonnummern, Adresse, Zahlungshinweis |
+| Texte & Bilder              | `src/data/content.json`    | Alle Überschriften und Absätze, Favoriten der Startseite, Kacheln, Galerie, Catering-Fotos |
+| Impressum & Datenschutz     | `src/data/legal.json`      | Name, E-Mail, USt-ID, Behörde, Hoster, Stand                                 |
+
+Fotos werden im Bildfeld hochgeladen, beim Upload automatisch verkleinert (max. 2000 px, WebP) und in
+`src/assets/images/` abgelegt; der Build erzeugt daraus alle Größen und Formate.
+Jede Speicherung ist ein Commit – die Änderung ist nach etwa zwei Minuten online, und jede Version
+lässt sich über die Git-Historie wiederherstellen.
+
+Die Formulare sind in `public/admin/config.yml` definiert (deutsche Beschriftungen, Pflichtfelder,
+Formatprüfungen). Technische Einstellungen, die der Inhaber nicht sehen soll (Domain, Koordinaten,
+Maps-Links), stehen in `src/data/config.json`; die Allergen-Legende in `src/data/legend.json`.
+
+**Einrichtung von Login und Hosting:** Schritt für Schritt in [`docs/CMS-EINRICHTUNG.md`](docs/CMS-EINRICHTUNG.md).
+
+Natürlich lassen sich die JSON-Dateien auch weiterhin direkt bearbeiten; `npm run check` prüft danach
+Nummern, Preise, Codes und Bildverweise.
 
 ## Build & Deployment
 
 ```bash
 npm install          # einmalig (einzige Abhängigkeit: sharp für die Bildoptimierung)
 npm run build        # erzeugt dist/
-npm run check        # Qualitätsprüfung
-npm run dev          # Build + Watch + Server auf http://localhost:4321
+npm run check        # Qualitätsprüfung (Links, Daten, CMS-Konfiguration)
+npm run dev          # Build + Watch + Server auf http://localhost:4321 (Admin: /admin/)
 ```
 
-`dist/` ist reines HTML/CSS/JS und läuft auf jedem Webspace (FTP-Upload), bei Netlify/Vercel/Cloudflare Pages (Build-Command `npm run build`, Output `dist`) oder GitHub Pages.
-Der Server sollte `/speisekarte/` auf `speisekarte/index.html` auflösen (Standard) und `404.html` als Fehlerseite ausliefern.
-Empfohlene Cache-Header: `assets/**` lange cachen (Dateinamen enthalten einen Hash), HTML kurz.
+**GitHub Pages (kostenlos, empfohlen):** Der Workflow `.github/workflows/deploy.yml` baut bei jedem Push,
+führt die Prüfung aus und veröffentlicht den `main`-Branch auf GitHub Pages. Einmalig in den
+Repository-Einstellungen *Pages → Source: GitHub Actions* wählen und die Domain eintragen
+(Details in `docs/CMS-EINRICHTUNG.md`). Pull Requests und andere Branches werden nur gebaut und geprüft.
 
-Die GitHub-Action `.github/workflows/build.yml` baut bei jedem Push und legt `dist/` als Artefakt ab.
+`dist/` ist reines HTML/CSS/JS und läuft ebenso auf jedem anderen Webspace (FTP-Upload), bei
+Netlify/Vercel/Cloudflare Pages (Build-Command `npm run build`, Output `dist`).
+Der Server sollte `/speisekarte/` auf `speisekarte/index.html` auflösen (Standard) und `404.html` als
+Fehlerseite ausliefern. Empfohlene Cache-Header: `assets/**` lange cachen (Dateinamen enthalten einen
+Hash), HTML kurz.
 
 ## Offene Punkte für den Inhaber
 
-Diese Angaben lagen nicht vor und sind auf den Seiten gelb markiert (`[…]`):
+Diese Angaben lagen nicht vor und sind auf den Seiten gelb markiert (`[…]`). Sie lassen sich im CMS unter *Impressum & Datenschutz* eintragen:
 
 1. **Impressum:** Vor- und Nachname der Inhaberin/des Inhabers, E-Mail-Adresse, USt-IdNr. bzw. Steuernummer, erlaubniserteilende Behörde.
-2. **Datenschutz:** Name, E-Mail, Hosting-Anbieter, Speicherdauer der Logfiles, Stand (Monat/Jahr). Bitte vor Veröffentlichung juristisch prüfen lassen.
+2. **Datenschutz:** Hosting-Anbieter (bei GitHub Pages: „GitHub, Inc., 88 Colin P. Kelly Jr. St., San Francisco, CA 94107, USA“), Speicherdauer der Logfiles, Stand (Monat/Jahr). Bitte vor Veröffentlichung juristisch prüfen lassen.
+0. **CMS-Login:** Authenticator einrichten und `base_url` in `public/admin/config.yml` setzen (`docs/CMS-EINRICHTUNG.md`).
 3. **Allergen-Code „o“** wird auf der alten Karte verwendet, ist aber nicht Teil der gesetzlichen Liste – in der Legende steht daher „siehe Aushang im Restaurant“. Bitte klären und in `menu.json` eintragen.
 4. Tags *Beliebt* wurden nach den Gerichten mit Foto auf der alten Seite vergeben (Pad Thai, Gaeng Kiow Wan, Yam Nua, gebackene Banane …) – gerne nach echten Verkaufszahlen anpassen.
 5. Preise und Öffnungszeiten wurden 1:1 von der alten Seite übernommen; bitte auf Aktualität prüfen.

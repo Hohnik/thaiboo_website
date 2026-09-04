@@ -25,9 +25,10 @@ export const icon = (name, cls = '') =>
  * Responsive <picture>. `manifest` is produced by build.mjs (see images()).
  * sizes: the CSS `sizes` attribute, defaults to full width on mobile / half on desktop.
  */
-export function picture(manifest, name, opts = {}) {
+export function picture(manifest, nameOrPath, opts = {}) {
+  const name = imgName(nameOrPath);
   const m = manifest[name];
-  if (!m) throw new Error(`Unknown image "${name}"`);
+  if (!m) throw new Error(`Unknown image "${nameOrPath}" – expected a file in src/assets/images/`);
   const {
     alt = '',
     sizes = '(min-width: 64em) 50vw, 100vw',
@@ -58,22 +59,50 @@ export const toMinutes = (hhmm) => {
   return h * 60 + m;
 };
 
-/** Compact human hours string, e.g. "Di–So 11–15 & 17–21 Uhr, Mo Ruhetag". */
-export function hoursSummary(hours) {
-  const open = hours.week.filter((d) => d.ranges.length);
-  const closed = hours.week.filter((d) => !d.ranges.length);
-  const short = (l) => l.slice(0, 2);
-  const r = open[0].ranges.map(([a, b]) => `${a.replace(':00', '')}–${b.replace(':00', '')}`).join(' & ');
-  // days are stored Sunday-first; present Tuesday..Sunday if that is the open run
-  const order = [2, 3, 4, 5, 6, 0].map((i) => hours.week.find((d) => d.day === i));
-  const first = order[0], last = order[order.length - 1];
-  return `${short(first.label)}–${short(last.label)} ${r} Uhr` + (closed.length ? `, ${closed.map((d) => short(d.label)).join('/')} Ruhetag` : '');
+/** Day keys as stored in site.json, indexed by JS getDay() (0 = Sunday). */
+export const DAY_KEYS = ['so', 'mo', 'di', 'mi', 'do', 'fr', 'sa'];
+export const DAY_LABELS = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+
+/** site.json hours -> [{ day, label, ranges: [[from, to], ...] }] (Sunday first, as the client script expects). */
+export function weekFromSite(site) {
+  return DAY_KEYS.map((k, i) => ({
+    day: i,
+    label: DAY_LABELS[i],
+    ranges: (site.hours?.days?.[k]?.ranges || []).filter((r) => r && r.from && r.to).map((r) => [r.from, r.to]),
+  }));
 }
+
+/** Compact human hours string, e.g. "Di–So 11–15 & 17–21 Uhr, Mo Ruhetag". */
+export function hoursSummary(site) {
+  const week = weekFromSite(site);
+  const order = [1, 2, 3, 4, 5, 6, 0].map((i) => week[i]);
+  const open = order.filter((d) => d.ranges.length);
+  const closed = order.filter((d) => !d.ranges.length);
+  if (!open.length) return 'Derzeit geschlossen';
+  const short = (l) => l.slice(0, 2);
+  const fmt = (t) => t.replace(/:00$/, '');
+  const r = open[0].ranges.map(([a, b]) => `${fmt(a)}–${fmt(b)}`).join(' & ');
+  const first = open[0], last = open[open.length - 1];
+  const days = first === last ? short(first.label) : `${short(first.label)}–${short(last.label)}`;
+  return `${days} ${r} Uhr` + (closed.length ? `, ${closed.map((d) => short(d.label)).join('/')} Ruhetag` : '');
+}
+
+/** "08761 726 65 72" -> "+4987617266572" for tel: links. */
+export function toTel(display) {
+  const digits = String(display || '').replace(/[^\d+]/g, '');
+  if (digits.startsWith('+')) return digits;
+  if (digits.startsWith('00')) return '+' + digits.slice(2);
+  if (digits.startsWith('0')) return '+49' + digits.slice(1);
+  return digits;
+}
+
+/** "/assets/images/gericht-pad-thai.png" or "gericht-pad-thai" -> "gericht-pad-thai" (manifest key). */
+export const imgName = (v) => (v ? String(v).split('/').pop().replace(/\.[^.]+$/, '') : '');
 
 /** Direct URL to the largest fallback rendition (used by the lightbox). */
 export function imgUrl(manifest, name, maxW = 1600) {
-  const m = manifest[name];
+  const m = manifest[imgName(name)];
   if (!m) throw new Error(`Unknown image "${name}"`);
   const w = m.widths.filter((x) => x <= maxW).pop() ?? m.widths[0];
-  return `/assets/img/${name}-${w}.${m.fallback}`;
+  return `/assets/img/${imgName(name)}-${w}.${m.fallback}`;
 }

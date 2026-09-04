@@ -409,7 +409,7 @@ body:has(dialog[open]) { overflow: hidden; }
 .prose h2 { font-size: var(--step-2); margin-top: 2em; }
 .prose h3 { font-size: var(--step-1); margin-top: 1.5em; }
 .prose p, .prose li { color: var(--ink-2); }
-.prose .placeholder { background: var(--gold-soft); color: #5c4410; padding: 0 .3em; border-radius: 4px; font-weight: 600; }
+.prose .placeholder, mark.placeholder { background: var(--gold-soft); color: #5c4410; padding: 0 .3em; border-radius: 4px; font-weight: 600; }
 
 /* ---------- footer ---------- */
 .site-footer { background: var(--dark); color: var(--on-dark-2); margin-top: var(--section); padding-block: clamp(2.5rem, 6vw, 4rem) 1.5rem; }

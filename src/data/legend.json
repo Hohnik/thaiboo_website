@@ -1,0 +1,39 @@
+{
+  "additives": {
+    "1": "mit Farbstoff",
+    "2": "mit Konservierungsstoff",
+    "3": "mit Antioxidationsmittel",
+    "4": "mit Geschmacksverstärker",
+    "5": "geschwefelt",
+    "6": "geschwärzt",
+    "7": "gewachst",
+    "8": "mit Phosphat",
+    "9": "mit Süßungsmittel"
+  },
+  "allergens": {
+    "a": "glutenhaltiges Getreide",
+    "b": "Krebstiere",
+    "c": "Eier",
+    "d": "Fisch",
+    "e": "Erdnüsse",
+    "f": "Soja",
+    "g": "Milch / Laktose",
+    "h": "Schalenfrüchte (Nüsse)",
+    "i": "Sellerie",
+    "j": "Senf",
+    "k": "Sesam",
+    "l": "Sulfite",
+    "m": "Lupinen",
+    "n": "Weichtiere",
+    "o": "siehe Aushang im Restaurant"
+  },
+  "proteinIcons": {
+    "Vegetarisch": "leaf",
+    "Tofu": "tofu",
+    "Hähnchen": "chicken",
+    "Rindfleisch": "beef",
+    "Garnelen": "shrimp",
+    "Fisch": "fish",
+    "Ente": "duck"
+  }
+}

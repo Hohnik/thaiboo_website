@@ -1,4 +1,4 @@
-import { esc, icon } from '../lib/html.js';
+import { esc, icon, toTel } from '../lib/html.js';
 import { hoursTable, statusChip } from '../lib/layout.js';
 
 export default {
@@ -8,13 +8,14 @@ export default {
   title: 'Kontakt & Öffnungszeiten',
   description: 'Thaiboo Moosburg – Landshuter Str. 9, 85368 Moosburg an der Isar. Öffnungszeiten Di–So 11–15 & 17–21 Uhr, Montag Ruhetag. Telefon 08761 726 65 72. Nur Barzahlung.',
   render(ctx) {
-    const { site } = ctx;
+    const { site, config, content } = ctx;
+    const c = content.contact;
     return `
 <section class="page-head">
   <div class="container">
     <p class="eyebrow">Kontakt</p>
-    <h1>So erreichen Sie uns</h1>
-    <p class="lead">Bestellungen, Reservierungen und Fragen zum Catering nehmen wir gerne telefonisch entgegen.</p>
+    <h1>${esc(c.title)}</h1>
+    <p class="lead">${esc(c.lead)}</p>
   </div>
 </section>
 
@@ -29,9 +30,9 @@ export default {
     <div class="card">
       <h2>${icon('phone')} Telefon</h2>
       <ul class="phone-list">
-        ${site.phones.map((p) => `<li><a href="tel:${p.tel}">${icon('phone')} ${esc(p.display)}<span>${esc(p.label)}</span></a></li>`).join('')}
+        ${site.phones.map((p) => `<li><a href="tel:${toTel(p.number)}">${icon('phone')} ${esc(String(p.number).replace(/ /g, ' '))}<span>${esc(p.label)}</span></a></li>`).join('')}
       </ul>
-      <p class="muted">Am schnellsten erreichen Sie uns während der Öffnungszeiten. Für Bestellungen zum Mitnehmen nennen Sie uns einfach die Nummern der Gerichte.</p>
+      <p class="muted">${esc(c.phoneNote)}</p>
       <p class="notice">${icon('cash')}<span><strong>${esc(site.payment)}.</strong> ${esc(site.paymentNote)}</span></p>
     </div>
     <div class="card">
@@ -42,11 +43,11 @@ export default {
         ${esc(site.address.zip)} ${esc(site.address.city)}
       </address>
       <div class="btn-group" style="margin-top:1.25rem">
-        <a class="btn btn-primary" href="${esc(site.mapsDirectionsUrl)}" target="_blank" rel="noopener">Route planen ${icon('external')}</a>
-        <a class="btn btn-secondary" href="${esc(site.mapsUrl)}" target="_blank" rel="noopener">In Google Maps öffnen</a>
+        <a class="btn btn-primary" href="${esc(config.mapsDirectionsUrl)}" target="_blank" rel="noopener">Route planen ${icon('external')}</a>
+        <a class="btn btn-secondary" href="${esc(config.mapsUrl)}" target="_blank" rel="noopener">In Google Maps öffnen</a>
       </div>
     </div>
-    <div class="map" data-map="${esc(site.mapsEmbedUrl)}">
+    <div class="map" data-map="${esc(config.mapsEmbedUrl)}">
       <div class="map-consent" data-map-consent>
         <div class="map-consent-inner">
           ${icon('pin', 'icon--lg')}

@@ -32,7 +32,7 @@ async function buildImages() {
   const srcDir = path.join(SRC, 'assets', 'images');
   const outDir = path.join(DIST, 'assets', 'img');
   await ensureDir(outDir); await ensureDir(CACHE);
-  const files = (await fs.readdir(srcDir)).filter((f) => /\.(jpe?g|png)$/i.test(f));
+  const files = (await fs.readdir(srcDir)).filter((f) => /\.(jpe?g|png|webp|avif)$/i.test(f));
   const manifest = {};
   const jobs = [];
   for (const file of files) {
@@ -40,8 +40,7 @@ async function buildImages() {
     const src = path.join(srcDir, file);
     const stat = await fs.stat(src);
     const meta = await sharp(src).metadata();
-    const isPng = /png$/i.test(file);
-    const fallback = isPng ? 'png' : 'jpg';
+    const fallback = meta.hasAlpha ? 'png' : 'jpg';
     const widths = WIDTHS.filter((w) => w < meta.width);
     if (!widths.includes(meta.width) && meta.width <= 1600) widths.push(meta.width);
     if (!widths.length) widths.push(Math.min(meta.width, 1600));
@@ -76,6 +75,8 @@ async function buildImages() {
   await sharp(logo).resize(96, 96, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } }).png({ compressionLevel: 9 }).toFile(path.join(DIST, 'logo-96.png'));
   await sharp(logo).resize(96, 96, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } }).webp({ quality: 85 }).toFile(path.join(DIST, 'logo-96.webp'));
   await sharp(logo).resize(180, 180, { fit: 'contain', background: '#fbf6ee' }).png().toFile(path.join(DIST, 'apple-touch-icon.png'));
+  await sharp(logo).resize(88, 88, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } }).png({ compressionLevel: 9 }).toFile(path.join(DIST, 'logo-88.png'));
+  await sharp(logo).resize(88, 88, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } }).webp({ quality: 85 }).toFile(path.join(DIST, 'logo-88.webp'));
   await sharp(path.join(srcDir, 'hero-gericht.jpg')).resize(1200, 630, { fit: 'cover', position: 'attention' }).jpeg({ quality: 82 }).toFile(path.join(DIST, 'og-image.jpg'));
   return manifest;
 }
@@ -84,10 +85,9 @@ async function buildImages() {
 async function buildPages(manifest, assets) {
   const { layout } = await import(pathToFileURL(path.join(SRC, 'lib', 'layout.js')).href + `?t=${Date.now()}`);
   const { picture, imgUrl } = await import(pathToFileURL(path.join(SRC, 'lib', 'html.js')).href + `?t=${Date.now()}`);
-  const site = await readJSON(path.join(SRC, 'data', 'site.json'));
-  const menu = await readJSON(path.join(SRC, 'data', 'menu.json'));
-  const drinks = await readJSON(path.join(SRC, 'data', 'drinks.json'));
-  const ctx = { site, menu, drinks, assets, manifest, img: (name, opts) => picture(manifest, name, opts), imgUrl: (name, w) => imgUrl(manifest, name, w) };
+  const data = {};
+  for (const f of ['site', 'config', 'menu', 'drinks', 'legend', 'content', 'legal']) data[f] = await readJSON(path.join(SRC, 'data', `${f}.json`));
+  const ctx = { ...data, assets, manifest, img: (name, opts) => picture(manifest, name, opts), imgUrl: (name, w) => imgUrl(manifest, name, w) };
 
   const pagesDir = path.join(SRC, 'pages');
   const files = (await fs.readdir(pagesDir)).filter((f) => f.endsWith('.js'));
@@ -105,9 +105,11 @@ async function buildPages(manifest, assets) {
     await fs.writeFile(outPath, html);
   }
   // sitemap + robots
+  const site = data.config;
   const urls = pages.filter((p) => p.sitemap !== false).map((p) => `  <url><loc>${site.url}${p.path}</loc><changefreq>${p.changefreq || 'monthly'}</changefreq><priority>${p.priority ?? 0.6}</priority></url>`).join('\n');
   await fs.writeFile(path.join(DIST, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`);
-  await fs.writeFile(path.join(DIST, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: ${site.url}/sitemap.xml\n`);
+  await fs.writeFile(path.join(DIST, 'robots.txt'), `User-agent: *\nAllow: /\nDisallow: /admin/\nSitemap: ${site.url}/sitemap.xml\n`);
+  await fs.writeFile(path.join(DIST, '.nojekyll'), '');
   return pages;
 }
 

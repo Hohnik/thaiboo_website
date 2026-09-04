@@ -1,4 +1,4 @@
-import { esc, icon, fmtPrice, hoursSummary } from './html.js';
+import { esc, icon, hoursSummary, weekFromSite, toTel, DAY_LABELS } from './html.js';
 import { sprite } from './icons.js';
 
 const NAV = [
@@ -7,53 +7,58 @@ const NAV = [
   { href: '/kontakt/', label: 'Kontakt' },
 ];
 
-export function jsonLd(site) {
+export function jsonLd(ctx) {
+  const { site, config } = ctx;
   const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   const spec = [];
-  for (const d of site.hours.week) for (const [o, c] of d.ranges) spec.push({ '@type': 'OpeningHoursSpecification', dayOfWeek: days[d.day], opens: o, closes: c });
+  for (const d of weekFromSite(site)) for (const [o, c] of d.ranges) spec.push({ '@type': 'OpeningHoursSpecification', dayOfWeek: days[d.day], opens: o, closes: c });
   return {
     '@context': 'https://schema.org',
     '@type': 'Restaurant',
-    '@id': `${site.url}/#restaurant`,
+    '@id': `${config.url}/#restaurant`,
     name: site.name,
     alternateName: site.legalName,
-    url: site.url,
-    image: `${site.url}/og-image.jpg`,
-    logo: `${site.url}/icon-512.png`,
-    telephone: site.phones[0].tel,
+    url: config.url,
+    image: `${config.url}/og-image.jpg`,
+    logo: `${config.url}/icon-512.png`,
+    telephone: toTel(site.phones[0].number),
     servesCuisine: ['Thai', 'Asiatisch'],
     priceRange: '€€',
     paymentAccepted: 'Cash',
     currenciesAccepted: 'EUR',
-    address: { '@type': 'PostalAddress', streetAddress: site.address.street, postalCode: site.address.zip, addressLocality: site.address.city, addressRegion: site.address.region, addressCountry: site.address.country },
-    geo: { '@type': 'GeoCoordinates', latitude: site.geo.lat, longitude: site.geo.lng },
-    hasMap: site.mapsUrl,
+    address: { '@type': 'PostalAddress', streetAddress: site.address.street, postalCode: site.address.zip, addressLocality: site.address.city, addressRegion: config.region, addressCountry: config.country },
+    geo: { '@type': 'GeoCoordinates', latitude: config.geo.lat, longitude: config.geo.lng },
+    hasMap: config.mapsUrl,
     openingHoursSpecification: spec,
-    hasMenu: `${site.url}/speisekarte/`,
+    hasMenu: `${config.url}/speisekarte/`,
     acceptsReservations: 'True',
   };
 }
 
 export function hoursTable(site, { compact = false } = {}) {
-  const order = [1, 2, 3, 4, 5, 6, 0];
-  const rows = order.map((i) => {
-    const d = site.hours.week.find((x) => x.day === i);
-    const t = d.ranges.length ? d.ranges.map(([a, b]) => `<span class="hours-range">${a}–${b} Uhr</span>`).join('') : 'Ruhetag';
+  const week = weekFromSite(site);
+  const rows = [1, 2, 3, 4, 5, 6, 0].map((i) => {
+    const d = week[i];
+    const t = d.ranges.length ? d.ranges.map(([a, b]) => `<span class="hours-range">${esc(a)}–${esc(b)} Uhr</span>`).join('') : 'Ruhetag';
     return `<tr data-day="${d.day}"${d.ranges.length ? '' : ' class="is-closed"'}><th scope="row">${esc(compact ? d.label.slice(0, 2) : d.label)}</th><td>${t}</td></tr>`;
   }).join('');
   return `<table class="hours-table${compact ? ' hours-table--compact' : ''}"><caption class="visually-hidden">Öffnungszeiten</caption><tbody>${rows}</tbody></table>`;
 }
 
 export function statusChip(site, cls = '') {
-  return `<span class="status ${cls}" data-status role="status" aria-live="polite"><span class="status-dot" aria-hidden="true"></span><span data-status-text>${esc(hoursSummary(site.hours))}</span></span>`;
+  return `<span class="status ${cls}" data-status role="status" aria-live="polite"><span class="status-dot" aria-hidden="true"></span><span data-status-text>${esc(hoursSummary(site))}</span></span>`;
 }
 
+export const phoneLink = (p, cls = '', extra = '') =>
+  `<a${cls ? ` class="${cls}"` : ''} href="tel:${toTel(p.number)}">${icon('phone')}${extra}${esc(String(p.number).replace(/ /g, ' '))}</a>`;
+
 export function layout({ path, title, description, body, ctx, bodyClass = '', extraLd, ogType = 'website', noindex = false }) {
-  const { site, assets } = ctx;
-  const fullTitle = path === '/' ? `${site.name} – Thai-Restaurant in Moosburg an der Isar` : `${title} · ${site.name} Moosburg`;
-  const canonical = `${site.url}${path === '/404/' ? '' : path}`;
-  const ld = [jsonLd(site), ...(extraLd || [])];
+  const { site, config, assets } = ctx;
+  const fullTitle = path === '/' ? `${site.name} – Thai-Restaurant in ${site.address.city}` : `${title} · ${site.name} Moosburg`;
+  const canonical = `${config.url}${path === '/404/' ? '' : path}`;
+  const ld = [jsonLd(ctx), ...(extraLd || [])];
   const phone = site.phones[0];
+  const nbsp = (s) => esc(String(s).replace(/ /g, ' '));
   return `<!DOCTYPE html>
 <html lang="de" dir="ltr">
 <head>
@@ -69,7 +74,7 @@ ${noindex ? '<meta name="robots" content="noindex">' : ''}
 <meta property="og:title" content="${esc(fullTitle)}">
 <meta property="og:description" content="${esc(description)}">
 <meta property="og:url" content="${canonical}">
-<meta property="og:image" content="${site.url}/og-image.jpg">
+<meta property="og:image" content="${config.url}/og-image.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="de_DE">
@@ -83,13 +88,13 @@ ${noindex ? '<meta name="robots" content="noindex">' : ''}
 <link rel="stylesheet" href="${assets.css}">
 <script type="application/ld+json">${JSON.stringify(ld)}</script>
 </head>
-<body class="${esc(bodyClass)}" data-hours='${JSON.stringify(site.hours.week)}'>
+<body class="${esc(bodyClass)}" data-hours='${JSON.stringify(weekFromSite(site))}'>
 ${sprite()}
 <a class="skip-link" href="#main">Zum Inhalt springen</a>
 <header class="site-header" data-header>
   <div class="container header-inner">
     <a class="brand" href="/" aria-label="${esc(site.name)} – Startseite">
-      <picture><source type="image/webp" srcset="/logo-96.webp"><img src="/logo-96.png" width="44" height="44" alt="" class="brand-logo" decoding="async"></picture>
+      <picture><source type="image/webp" srcset="/logo-88.webp"><img src="/logo-88.png" width="44" height="44" alt="" class="brand-logo" decoding="async"></picture>
       <span class="brand-name">Thai<span>boo</span></span>
     </a>
     <nav class="nav" id="nav" aria-label="Hauptnavigation">
@@ -98,7 +103,7 @@ ${sprite()}
       </ul>
     </nav>
     <div class="header-actions">
-      <a class="btn btn-primary btn-sm header-cta" href="tel:${phone.tel}">${icon('phone')}<span class="header-cta-text">${esc(phone.display)}</span><span class="visually-hidden">anrufen</span></a>
+      <a class="btn btn-primary btn-sm header-cta" href="tel:${toTel(phone.number)}">${icon('phone')}<span class="header-cta-text">${nbsp(phone.number)}</span><span class="visually-hidden">anrufen</span></a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav" data-nav-toggle>
         <span class="nav-toggle-icon" aria-hidden="true"><span></span><span></span><span></span></span>
         <span class="visually-hidden">Menü öffnen</span>
@@ -112,17 +117,17 @@ ${body}
 <footer class="site-footer">
   <div class="container footer-grid">
     <div class="footer-brand">
-      <a class="brand" href="/"><picture><source type="image/webp" srcset="/logo-96.webp"><img src="/logo-96.png" width="44" height="44" alt="" class="brand-logo" decoding="async"></picture><span class="brand-name">Thai<span>boo</span></span></a>
+      <a class="brand" href="/"><picture><source type="image/webp" srcset="/logo-88.webp"><img src="/logo-88.png" width="44" height="44" alt="" class="brand-logo" loading="lazy" decoding="async"></picture><span class="brand-name">Thai<span>boo</span></span></a>
       <p>${esc(site.tagline)}. Frisch gekocht, zum Genießen vor Ort oder zum Mitnehmen.</p>
       <p class="footer-cash">${icon('cash')} ${esc(site.payment)}</p>
     </div>
     <div>
       <h2 class="footer-title">Kontakt</h2>
       <address class="footer-address">
-        <a href="${esc(site.mapsUrl)}" target="_blank" rel="noopener">${esc(site.address.street)}<br>${esc(site.address.zip)} ${esc(site.address.city)}</a>
+        <a href="${esc(config.mapsUrl)}" target="_blank" rel="noopener">${esc(site.address.street)}<br>${esc(site.address.zip)} ${esc(site.address.city)}</a>
       </address>
       <ul class="footer-list">
-        ${site.phones.map((p) => `<li><a href="tel:${p.tel}">${icon('phone')} ${esc(p.display)}</a> <span class="muted">(${esc(p.label)})</span></li>`).join('')}
+        ${site.phones.map((p) => `<li>${phoneLink(p, '', ' ')} <span class="muted">(${esc(p.label)})</span></li>`).join('')}
       </ul>
     </div>
     <div>
@@ -146,9 +151,9 @@ ${body}
   </div>
 </footer>
 <nav class="mobile-bar" aria-label="Schnellzugriff">
-  <a href="tel:${phone.tel}">${icon('phone')}<span>Anrufen</span></a>
+  <a href="tel:${toTel(phone.number)}">${icon('phone')}<span>Anrufen</span></a>
   <a href="/speisekarte/"${path === '/speisekarte/' ? ' aria-current="page"' : ''}>${icon('bag')}<span>Speisekarte</span></a>
-  <a href="${esc(site.mapsDirectionsUrl)}" target="_blank" rel="noopener">${icon('pin')}<span>Route</span></a>
+  <a href="${esc(config.mapsDirectionsUrl)}" target="_blank" rel="noopener">${icon('pin')}<span>Route</span></a>
 </nav>
 <script src="${assets.js}" defer></script>
 </body>

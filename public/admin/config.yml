@@ -1,0 +1,455 @@
+# yaml-language-server: $schema=https://unpkg.com/@sveltia/cms/schema/sveltia-cms.json
+#
+# Sveltia CMS – Redaktionsoberfläche für thaiboo-moosburg.de
+# Aufruf: https://thaiboo-moosburg.de/admin/
+# Einrichtung des Logins: siehe docs/CMS-EINRICHTUNG.md
+
+backend:
+  name: github
+  repo: hohnik/thaiboo_website
+  branch: main
+  # URL des Sveltia CMS Authenticators (Cloudflare Worker) – siehe docs/CMS-EINRICHTUNG.md
+  base_url: https://sveltia-cms-auth.REPLACE-ME.workers.dev
+  commit_messages:
+    create: 'Inhalt angelegt: {{collection}} „{{slug}}“'
+    update: 'Inhalt geändert: {{collection}} „{{slug}}“'
+    delete: 'Inhalt gelöscht: {{collection}} „{{slug}}“'
+    uploadMedia: 'Bild hochgeladen: {{path}}'
+    deleteMedia: 'Bild gelöscht: {{path}}'
+
+site_url: https://thaiboo-moosburg.de
+display_url: https://thaiboo-moosburg.de
+logo_url: /icon-192.png
+
+# Bilder landen im Repository; der Build erzeugt daraus automatisch alle Größen und Formate.
+media_folder: /src/assets/images
+public_folder: /assets/images
+media_libraries:
+  default:
+    config:
+      max_file_size: 8388608 # 8 MB
+      slugify_filename: true
+      transformations:
+        raster_image:
+          format: webp
+          quality: 85
+          width: 2000
+          height: 2000
+
+# ---------- wiederverwendbare Feld-Definitionen ----------
+_shared:
+  hauptzutat: &hauptzutat
+    - { label: Vegetarisch, value: Vegetarisch }
+    - { label: Tofu, value: Tofu }
+    - { label: Hähnchen, value: Hähnchen }
+    - { label: Rindfleisch, value: Rindfleisch }
+    - { label: Garnelen, value: Garnelen }
+    - { label: Ente, value: Ente }
+    - { label: Fisch, value: Fisch }
+  preis: &preis
+    name: price
+    label: Preis (€)
+    widget: number
+    value_type: float
+    min: 0
+    step: 0.1
+    after_input: '€'
+  zeiten: &zeiten
+    name: ranges
+    label: Öffnungszeiten
+    label_singular: Zeitraum
+    widget: list
+    required: false
+    hint: 'Leer lassen = Ruhetag. Zeiten im Format HH:MM, z. B. 11:00 bis 15:00.'
+    summary: '{{from}} – {{to}} Uhr'
+    fields:
+      - { name: from, label: Von, widget: string, pattern: ['^([01]\d|2[0-3]):[0-5]\d$', 'Bitte im Format HH:MM eingeben, z. B. 11:00'] }
+      - { name: to, label: Bis, widget: string, pattern: ['^([01]\d|2[0-3]):[0-5]\d$', 'Bitte im Format HH:MM eingeben, z. B. 15:00'] }
+  bildMitAlt: &bildMitAlt
+    - { name: image, label: Bild, widget: image }
+    - { name: alt, label: Bildbeschreibung (für Screenreader & Google), widget: string, required: false }
+
+collections:
+  # ======================= SPEISEKARTE =======================
+  - name: speisekarte
+    label: Speisekarte
+    icon: restaurant_menu
+    files:
+      - name: gerichte
+        label: Gerichte & Kategorien
+        icon: lunch_dining
+        file: /src/data/menu.json
+        format: json
+        fields:
+          - name: categories
+            label: Kategorien
+            label_singular: Kategorie
+            widget: list
+            collapsed: auto
+            summary: '{{title}}'
+            fields:
+              - { name: id, label: 'Kürzel (für Links, nur Kleinbuchstaben und Bindestriche)', widget: string, pattern: ['^[a-z0-9-]+$', 'Nur Kleinbuchstaben, Ziffern und Bindestriche, z. B. thai-currys'] }
+              - { name: title, label: Name der Kategorie, widget: string }
+              - { name: intro, label: Kurzer Einleitungstext, widget: text, required: false }
+              - name: priceTable
+                label: Preise nach Hauptzutat (gilt für alle Gerichte ohne eigenen Preis)
+                label_singular: Hauptzutat
+                widget: list
+                required: false
+                summary: '{{label}}: {{price}} €'
+                fields:
+                  - { name: label, label: Hauptzutat, widget: select, options: *hauptzutat }
+                  - *preis
+              - name: items
+                label: Gerichte
+                label_singular: Gericht
+                widget: list
+                collapsed: auto
+                summary: '{{no}}. {{name}}'
+                thumbnail: image
+                fields:
+                  - { name: no, label: Nummer, widget: number, value_type: int, min: 1 }
+                  - { name: name, label: Name, widget: string }
+                  - { name: sub, label: Zusatz (z. B. „Reisnudeln“ oder „6 Stück“), widget: string, required: false }
+                  - { name: desc, label: Beschreibung, widget: text, required: false }
+                  - name: prices
+                    label: Eigene Preise (leer lassen, wenn die Kategorie-Preise gelten)
+                    label_singular: Preis
+                    widget: list
+                    required: false
+                    summary: '{{label}} {{price}} €'
+                    fields:
+                      - { name: label, label: Variante (leer = Einheitspreis), widget: select, options: *hauptzutat, required: false }
+                      - *preis
+                  - name: tags
+                    label: Kennzeichnung
+                    widget: select
+                    multiple: true
+                    required: false
+                    options:
+                      - { label: Vegetarisch möglich, value: vegetarisch }
+                      - { label: Scharf, value: scharf }
+                      - { label: Beliebt (wird hervorgehoben), value: beliebt }
+                  - name: codes
+                    label: Zusatzstoffe & Allergene
+                    widget: select
+                    multiple: true
+                    required: false
+                    dropdown_threshold: 100
+                    options:
+                      - { label: 1 – mit Farbstoff, value: '1' }
+                      - { label: 2 – mit Konservierungsstoff, value: '2' }
+                      - { label: 3 – mit Antioxidationsmittel, value: '3' }
+                      - { label: 4 – mit Geschmacksverstärker, value: '4' }
+                      - { label: 5 – geschwefelt, value: '5' }
+                      - { label: 6 – geschwärzt, value: '6' }
+                      - { label: 7 – gewachst, value: '7' }
+                      - { label: 8 – mit Phosphat, value: '8' }
+                      - { label: 9 – mit Süßungsmittel, value: '9' }
+                      - { label: a – glutenhaltiges Getreide, value: a }
+                      - { label: b – Krebstiere, value: b }
+                      - { label: c – Eier, value: c }
+                      - { label: d – Fisch, value: d }
+                      - { label: e – Erdnüsse, value: e }
+                      - { label: f – Soja, value: f }
+                      - { label: g – Milch / Laktose, value: g }
+                      - { label: h – Schalenfrüchte (Nüsse), value: h }
+                      - { label: i – Sellerie, value: i }
+                      - { label: j – Senf, value: j }
+                      - { label: k – Sesam, value: k }
+                      - { label: l – Sulfite, value: l }
+                      - { label: m – Lupinen, value: m }
+                      - { label: n – Weichtiere, value: n }
+                      - { label: o – siehe Aushang, value: o }
+                  - { name: image, label: Foto (am besten freigestellt mit transparentem Hintergrund), widget: image, required: false }
+                  - name: extra
+                    label: Optionaler Aufpreis (z. B. „mit Spiegelei“)
+                    widget: object
+                    required: false
+                    collapsed: true
+                    fields:
+                      - { name: name, label: Bezeichnung, widget: string, required: false }
+                      - { name: price, label: Aufpreis (€), widget: number, value_type: float, min: 0, step: 0.1, required: false }
+          - name: extras
+            label: Extras & Zusätze
+            widget: object
+            fields:
+              - { name: title, label: Überschrift, widget: string }
+              - { name: intro, label: Einleitung, widget: string, required: false }
+              - name: items
+                label: Extras
+                label_singular: Extra
+                widget: list
+                summary: '{{name}} + {{price}} €'
+                fields:
+                  - { name: name, label: Bezeichnung, widget: string }
+                  - *preis
+      - name: getraenke
+        label: Bubble Tea & Getränke
+        icon: local_cafe
+        file: /src/data/drinks.json
+        format: json
+        fields:
+          - name: bubbleTea
+            label: Bubble Tea
+            widget: object
+            fields:
+              - { name: title, label: Überschrift, widget: string }
+              - { name: intro, label: Einleitung, widget: text, required: false }
+              - name: groups
+                label: Sorten-Gruppen
+                label_singular: Gruppe
+                widget: list
+                summary: '{{title}} – {{price}} €'
+                fields:
+                  - { name: title, label: Gruppe, widget: string }
+                  - *preis
+                  - { name: note, label: Hinweis (z. B. „wahlweise als Tee oder Soda“), widget: string, required: false }
+                  - { name: items, label: Sorten, label_singular: Sorte, widget: list, hint: 'Eine Sorte pro Zeile.' }
+          - name: drinks
+            label: Getränke
+            widget: object
+            fields:
+              - { name: title, label: Überschrift, widget: string }
+              - name: groups
+                label: Getränke-Gruppen
+                label_singular: Gruppe
+                widget: list
+                summary: '{{title}}'
+                fields:
+                  - { name: title, label: Gruppe, widget: string }
+                  - name: items
+                    label: Getränke
+                    label_singular: Getränk
+                    widget: list
+                    summary: '{{name}} {{size}} – {{price}} €'
+                    fields:
+                      - { name: name, label: Name, widget: string }
+                      - { name: size, label: 'Größe / Hinweis (z. B. „0,5 l“)', widget: string, required: false }
+                      - *preis
+
+  # ======================= ÖFFNUNGSZEITEN & KONTAKT =======================
+  - name: restaurant
+    label: Öffnungszeiten & Kontakt
+    icon: storefront
+    files:
+      - name: site
+        label: Öffnungszeiten & Kontakt
+        icon: schedule
+        file: /src/data/site.json
+        format: json
+        fields:
+          - name: hours
+            label: Öffnungszeiten
+            widget: object
+            fields:
+              - { name: note, label: Hinweis unter den Öffnungszeiten, widget: string, required: false, hint: 'z. B. „An Feiertagen geöffnet. Montag Ruhetag.“' }
+              - name: days
+                label: Wochentage
+                widget: object
+                fields:
+                  - { name: mo, label: Montag, widget: object, fields: [*zeiten] }
+                  - { name: di, label: Dienstag, widget: object, fields: [*zeiten] }
+                  - { name: mi, label: Mittwoch, widget: object, fields: [*zeiten] }
+                  - { name: do, label: Donnerstag, widget: object, fields: [*zeiten] }
+                  - { name: fr, label: Freitag, widget: object, fields: [*zeiten] }
+                  - { name: sa, label: Samstag, widget: object, fields: [*zeiten] }
+                  - { name: so, label: Sonntag, widget: object, fields: [*zeiten] }
+          - name: phones
+            label: Telefonnummern
+            label_singular: Telefonnummer
+            widget: list
+            min: 1
+            summary: '{{label}}: {{number}}'
+            hint: 'Die erste Nummer wird für alle „Anrufen“-Buttons verwendet.'
+            fields:
+              - { name: label, label: 'Bezeichnung (z. B. Restaurant, Mobil)', widget: string }
+              - { name: number, label: Nummer (so wie sie angezeigt werden soll), widget: string, pattern: ['^[0-9+][0-9 /-]{5,}$', 'Bitte nur Ziffern, Leerzeichen und ggf. + eingeben'] }
+          - name: address
+            label: Adresse
+            widget: object
+            fields:
+              - { name: street, label: Straße & Hausnummer, widget: string }
+              - { name: zip, label: PLZ, widget: string }
+              - { name: city, label: Ort, widget: string }
+          - { name: name, label: Name des Restaurants, widget: string }
+          - { name: legalName, label: 'Offizieller Name (Impressum, Footer)', widget: string }
+          - { name: tagline, label: Kurzbeschreibung (Footer), widget: string }
+          - { name: payment, label: Zahlungshinweis kurz, widget: string, hint: 'z. B. „Nur Barzahlung“' }
+          - { name: paymentNote, label: Zahlungshinweis ausführlich, widget: string }
+
+  # ======================= TEXTE & BILDER =======================
+  - name: texte
+    label: Texte & Bilder
+    icon: edit_note
+    files:
+      - name: content
+        label: Seitentexte
+        icon: article
+        file: /src/data/content.json
+        format: json
+        fields:
+          - name: home
+            label: Startseite
+            widget: object
+            fields:
+              - name: hero
+                label: Kopfbereich
+                widget: object
+                fields:
+                  - { name: eyebrow, label: Kleine Zeile über der Überschrift, widget: string }
+                  - { name: title, label: Überschrift, widget: string }
+                  - { name: titleAccent, label: 'Überschrift – hervorgehobener Teil (kursiv, orange)', widget: string }
+                  - { name: lead, label: Einleitungstext, widget: text }
+                  - { name: image, label: Großes Foto, widget: image }
+                  - { name: imageAlt, label: Bildbeschreibung, widget: string, required: false }
+                  - { name: badgeDish, label: Hervorgehobenes Gericht (Nummer aus der Speisekarte), widget: number, value_type: int, min: 1 }
+                  - { name: badgeLabel, label: Text auf dem Hinweis-Kärtchen, widget: string }
+              - name: infoCards
+                label: Info-Karten
+                widget: object
+                fields:
+                  - { name: addressHint, label: Hinweis zur Anfahrt, widget: string, required: false }
+                  - { name: orderText, label: Text „Bestellen & Abholen“, widget: string }
+              - name: favorites
+                label: Favoriten
+                widget: object
+                fields:
+                  - { name: eyebrow, label: Kleine Zeile, widget: string }
+                  - { name: title, label: Überschrift, widget: string }
+                  - { name: intro, label: Text, widget: text, required: false }
+                  - { name: dishes, label: Gerichte (Nummern aus der Speisekarte), label_singular: Gericht, widget: list, min: 1, max: 8, field: { name: no, label: Nummer, widget: number, value_type: int, min: 1 } }
+              - name: about
+                label: Abschnitt „Über uns“
+                widget: object
+                fields:
+                  - { name: eyebrow, label: Kleine Zeile, widget: string }
+                  - { name: title, label: Überschrift, widget: string }
+                  - { name: text, label: Text, widget: text }
+                  - { name: bullets, label: Stichpunkte, label_singular: Stichpunkt, widget: list, required: false }
+                  - { name: image, label: Foto, widget: image }
+                  - { name: imageAlt, label: Bildbeschreibung, widget: string, required: false }
+              - name: teasers
+                label: Kacheln (Bubble Tea, Catering …)
+                label_singular: Kachel
+                widget: list
+                max: 4
+                summary: '{{title}}'
+                fields:
+                  - { name: eyebrow, label: Kleine Zeile, widget: string, required: false }
+                  - { name: title, label: Überschrift, widget: string }
+                  - { name: text, label: Text, widget: text }
+                  - { name: image, label: Bild, widget: image }
+                  - { name: imageAlt, label: Bildbeschreibung, widget: string, required: false }
+                  - { name: cutout, label: Freigestelltes Bild (auf farbigem Hintergrund zeigen), widget: boolean, default: false, required: false }
+                  - { name: link, label: Link (z. B. /speisekarte/#bubble-tea), widget: string, required: false }
+                  - { name: linkLabel, label: Link-Beschriftung, widget: string, required: false }
+              - name: gallery
+                label: Galerie
+                widget: object
+                fields:
+                  - { name: eyebrow, label: Kleine Zeile, widget: string }
+                  - { name: title, label: Überschrift, widget: string }
+                  - { name: images, label: Bilder, label_singular: Bild, widget: list, max: 12, thumbnail: image, summary: '{{alt}}', fields: *bildMitAlt }
+              - name: cta
+                label: Aufruf-Box „Hunger?“
+                widget: object
+                fields:
+                  - { name: title, label: Überschrift, widget: string }
+                  - { name: text, label: Text, widget: text }
+          - name: menu
+            label: Speisekarte (Texte)
+            widget: object
+            fields:
+              - { name: title, label: Überschrift, widget: string }
+              - { name: lead, label: Einleitungstext, widget: text }
+              - { name: notice, label: Hinweis-Box „Gut zu wissen“, widget: text }
+              - { name: legendIntro, label: Text über der Allergen-Legende, widget: text }
+              - name: cta
+                label: Aufruf-Box am Ende
+                widget: object
+                fields:
+                  - { name: title, label: Überschrift, widget: string }
+                  - { name: text, label: Text, widget: text }
+          - name: about
+            label: Seite „Über uns“
+            widget: object
+            fields:
+              - name: hero
+                label: Kopfbereich
+                widget: object
+                fields:
+                  - { name: title, label: Überschrift, widget: string }
+                  - { name: lead, label: Einleitungstext, widget: text }
+                  - { name: image, label: Hintergrundfoto, widget: image }
+              - name: team
+                label: Unser Team
+                widget: object
+                fields:
+                  - { name: eyebrow, label: Kleine Zeile, widget: string }
+                  - { name: title, label: Überschrift, widget: string }
+                  - { name: paragraphs, label: Absätze, label_singular: Absatz, widget: list, field: { name: text, label: Absatz, widget: text } }
+                  - { name: image, label: Foto, widget: image }
+                  - { name: imageAlt, label: Bildbeschreibung, widget: string, required: false }
+              - name: kitchen
+                label: Unsere Küche
+                widget: object
+                fields:
+                  - { name: eyebrow, label: Kleine Zeile, widget: string }
+                  - { name: title, label: Überschrift, widget: string }
+                  - { name: text, label: Text, widget: text }
+                  - name: bullets
+                    label: Stichpunkte
+                    label_singular: Stichpunkt
+                    widget: list
+                    required: false
+                    summary: '{{title}}'
+                    fields:
+                      - { name: title, label: Fett gedruckt, widget: string }
+                      - { name: text, label: Erklärung, widget: string }
+                  - { name: image, label: Foto, widget: image }
+                  - { name: imageAlt, label: Bildbeschreibung, widget: string, required: false }
+              - name: bubbleTea
+                label: Bubble Tea
+                widget: object
+                fields:
+                  - { name: eyebrow, label: Kleine Zeile, widget: string }
+                  - { name: title, label: Überschrift, widget: string }
+                  - { name: text, label: Text, widget: text }
+                  - { name: image, label: Foto, widget: image }
+                  - { name: imageAlt, label: Bildbeschreibung, widget: string, required: false }
+              - name: catering
+                label: Catering
+                widget: object
+                fields:
+                  - { name: eyebrow, label: Kleine Zeile, widget: string }
+                  - { name: title, label: Überschrift, widget: string }
+                  - { name: intro, label: Einleitung, widget: text }
+                  - { name: paragraphs, label: Absätze, label_singular: Absatz, widget: list, field: { name: text, label: Absatz, widget: text } }
+                  - { name: images, label: Fotos, label_singular: Foto, widget: list, max: 8, thumbnail: image, summary: '{{alt}}', fields: *bildMitAlt }
+          - name: contact
+            label: Seite „Kontakt“
+            widget: object
+            fields:
+              - { name: title, label: Überschrift, widget: string }
+              - { name: lead, label: Einleitungstext, widget: text }
+              - { name: phoneNote, label: Hinweis unter den Telefonnummern, widget: text }
+
+  # ======================= RECHTLICHES =======================
+  - name: rechtliches
+    label: Impressum & Datenschutz
+    icon: gavel
+    files:
+      - name: legal
+        label: Angaben für Impressum & Datenschutz
+        icon: badge
+        file: /src/data/legal.json
+        format: json
+        fields:
+          - { name: ownerName, label: Vor- und Nachname der Inhaberin / des Inhabers, widget: string, required: false }
+          - { name: email, label: E-Mail-Adresse, widget: string, required: false, pattern: ['^$|^[^@\s]+@[^@\s]+\.[^@\s]+$', 'Bitte eine gültige E-Mail-Adresse eingeben'] }
+          - { name: vatId, label: Umsatzsteuer-ID (oder Steuernummer), widget: string, required: false }
+          - { name: authority, label: Erlaubnisbehörde (Gaststättenerlaubnis), widget: string, required: false, hint: 'z. B. Stadt Moosburg a. d. Isar' }
+          - { name: hoster, label: Hosting-Anbieter (für die Datenschutzerklärung), widget: string, required: false, hint: 'z. B. GitHub, Inc., San Francisco, USA (GitHub Pages)' }
+          - { name: logRetention, label: Speicherdauer der Server-Logfiles, widget: string, required: false, hint: 'z. B. 14 Tage' }
+          - { name: updated, label: Stand der Datenschutzerklärung, widget: string, required: false, hint: 'z. B. September 2026' }
