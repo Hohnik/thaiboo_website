@@ -10,7 +10,7 @@ export default {
   render(ctx) {
     const { site } = ctx;
     return `
-<section class="page-head"><div class="container"><p class="eyebrow">Rechtliches</p><h1>Datenschutzerklärung</h1><p class="lead">Kurz gesagt: Diese Website setzt keine Cookies, nutzt keine Tracking-Dienste und lädt externe Inhalte (Google Maps) erst nach Ihrem Klick.</p></div></section>
+<section class="page-head"><div class="container"><p class="eyebrow">Rechtliches</p><h1>Datenschutz&shy;erklärung</h1><p class="lead">Kurz gesagt: Diese Website setzt keine Cookies, nutzt keine Tracking-Dienste und lädt externe Inhalte (Google Maps) erst nach Ihrem Klick.</p></div></section>
 <section class="section section--tight" style="padding-top:0"><div class="container prose">
   <h2>1. Verantwortlicher</h2>
   <p>${ph('Vor- und Nachname')}<br>${esc(site.legalName)}<br>${esc(site.address.street)}<br>${esc(site.address.zip)} ${esc(site.address.city)}<br>Telefon: ${esc(site.phones[0].display)}<br>E-Mail: ${ph('E-Mail-Adresse')}</p>
