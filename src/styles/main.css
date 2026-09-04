@@ -450,7 +450,7 @@ body:has(dialog[open]) { overflow: hidden; }
 
 /* ---------- print (menu) ---------- */
 @media print {
-  .site-header, .mobile-bar, .menu-nav, .menu-tools, .site-footer, .cta-band, .skip-link { display: none !important; }
+  .site-header, .mobile-bar, .menu-nav, .menu-tools, .site-footer, .cta-band, .skip-link, .status, .btn, .notice, .menu-empty { display: none !important; }
   body { background: #fff; color: #000; font-size: 10.5pt; }
   .dish { break-inside: avoid; border: 0; border-bottom: 1px solid #ddd; border-radius: 0; padding: .4rem 0; }
   .dish-list { grid-template-columns: 1fr 1fr; gap: 0 2rem; }
