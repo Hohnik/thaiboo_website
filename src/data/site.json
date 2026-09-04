@@ -1,0 +1,134 @@
+{
+  "name": "Thaiboo",
+  "legalName": "Thaiboo by Ranji",
+  "tagline": "Thailändische Küche in Moosburg an der Isar",
+  "url": "https://thaiboo-moosburg.de",
+  "address": {
+    "street": "Landshuter Str. 9",
+    "zip": "85368",
+    "city": "Moosburg an der Isar",
+    "region": "Bayern",
+    "country": "DE"
+  },
+  "geo": {
+    "lat": 48.46576,
+    "lng": 11.93685
+  },
+  "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Thaiboo+Landshuter+Str.+9+85368+Moosburg+an+der+Isar",
+  "mapsDirectionsUrl": "https://www.google.com/maps/dir/?api=1&destination=Landshuter+Str.+9,+85368+Moosburg+an+der+Isar",
+  "mapsEmbedUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2645.518885578362!2d11.936851315660498!3d48.46575997925096!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x479e3c4e19cdbb17%3A0xcca435b3e329e572!2sThaiboo%20by%20Ranji!5e0!3m2!1sde!2sde!4v1679888748648!5m2!1sde!2sde",
+  "phones": [
+    {
+      "label": "Restaurant",
+      "display": "08761 726 65 72",
+      "tel": "+4987617266572"
+    },
+    {
+      "label": "Mobil",
+      "display": "0151 573 217 61",
+      "tel": "+4915157321761"
+    }
+  ],
+  "hours": {
+    "note": "An Feiertagen geöffnet. Montag Ruhetag.",
+    "week": [
+      {
+        "day": 0,
+        "label": "Sonntag",
+        "ranges": [
+          [
+            "11:00",
+            "15:00"
+          ],
+          [
+            "17:00",
+            "21:00"
+          ]
+        ]
+      },
+      {
+        "day": 1,
+        "label": "Montag",
+        "ranges": []
+      },
+      {
+        "day": 2,
+        "label": "Dienstag",
+        "ranges": [
+          [
+            "11:00",
+            "15:00"
+          ],
+          [
+            "17:00",
+            "21:00"
+          ]
+        ]
+      },
+      {
+        "day": 3,
+        "label": "Mittwoch",
+        "ranges": [
+          [
+            "11:00",
+            "15:00"
+          ],
+          [
+            "17:00",
+            "21:00"
+          ]
+        ]
+      },
+      {
+        "day": 4,
+        "label": "Donnerstag",
+        "ranges": [
+          [
+            "11:00",
+            "15:00"
+          ],
+          [
+            "17:00",
+            "21:00"
+          ]
+        ]
+      },
+      {
+        "day": 5,
+        "label": "Freitag",
+        "ranges": [
+          [
+            "11:00",
+            "15:00"
+          ],
+          [
+            "17:00",
+            "21:00"
+          ]
+        ]
+      },
+      {
+        "day": 6,
+        "label": "Samstag",
+        "ranges": [
+          [
+            "11:00",
+            "15:00"
+          ],
+          [
+            "17:00",
+            "21:00"
+          ]
+        ]
+      }
+    ]
+  },
+  "payment": "Nur Barzahlung",
+  "paymentNote": "Wir akzeptieren ausschließlich Bargeld – keine EC- oder Kreditkarten.",
+  "services": [
+    "Restaurant",
+    "Zum Mitnehmen",
+    "Catering",
+    "Bubble Tea"
+  ]
+}

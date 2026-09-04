@@ -1,0 +1,67 @@
+{
+  "bubbleTea": {
+    "title": "Bubble Tea",
+    "intro": "Hausgemachte Bubble Teas mit Tapioka-Perlen oder Popping Boba – zum Hierbleiben oder Mitnehmen.",
+    "groups": [
+      {
+        "title": "Früchte- & Soda-Mix",
+        "price": 5.0,
+        "note": "wahlweise als Tee oder Soda",
+        "items": ["Blueberry", "Erdbeere", "Lychee", "Pfirsich", "Kiwi", "Apfel", "Maracuja", "Kumquat-Lemon", "Himbeere", "Mango", "Kirsche", "Wassermelone"]
+      },
+      {
+        "title": "Milch-Tee",
+        "price": 5.5,
+        "items": ["Milchtee klassisch", "Schokolade", "Erdbeere", "Kokos", "Braunzucker", "Blueberry", "Hale Rose", "Caramel", "Blue Coral"]
+      },
+      {
+        "title": "Latte",
+        "price": 5.8,
+        "items": ["Taro Latte", "Matcha Latte"]
+      }
+    ]
+  },
+  "drinks": {
+    "title": "Getränke",
+    "groups": [
+      {
+        "title": "Säfte & Eistee",
+        "items": [
+          { "name": "Mangosaft", "size": "0,35 l", "price": 2.5 },
+          { "name": "Lycheesaft", "size": "0,35 l", "price": 2.5 },
+          { "name": "Kokossaft", "size": "0,35 l", "price": 2.5 },
+          { "name": "Oishi Grüntee", "size": "0,5 l", "price": 2.5 }
+        ]
+      },
+      {
+        "title": "Alkoholfrei",
+        "items": [
+          { "name": "Mineralwasser still", "size": "0,5 l", "price": 1.9 },
+          { "name": "Mineralwasser spritzig", "size": "0,5 l", "price": 1.9 },
+          { "name": "Cola / Cola light", "size": "0,3 l", "price": 1.9 },
+          { "name": "Spezi", "size": "0,3 l", "price": 1.9 },
+          { "name": "Fanta", "size": "0,3 l", "price": 1.9 }
+        ]
+      },
+      {
+        "title": "Heißgetränke",
+        "items": [
+          { "name": "Espresso", "price": 2.5 },
+          { "name": "Kaffee", "price": 2.9 },
+          { "name": "Latte Macchiato", "price": 3.5 },
+          { "name": "Frischer Ingwertee", "size": "Kanne", "price": 4.5 },
+          { "name": "Jasmintee", "size": "Kanne", "price": 4.5 },
+          { "name": "Grüner Tee", "size": "Kanne", "price": 4.5 }
+        ]
+      },
+      {
+        "title": "Bier",
+        "items": [
+          { "name": "Chang", "size": "0,32 l · 5 % vol.", "price": 2.9 },
+          { "name": "Singha", "size": "0,32 l · 5 % vol.", "price": 3.2 },
+          { "name": "Augustiner", "size": "0,5 l · 5,2 % vol.", "price": 3.2 }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,915 @@
+{
+  "legend": {
+    "additives": {
+      "1": "mit Farbstoff",
+      "2": "mit Konservierungsstoff",
+      "3": "mit Antioxidationsmittel",
+      "4": "mit Geschmacksverstärker",
+      "5": "geschwefelt",
+      "6": "geschwärzt",
+      "7": "gewachst",
+      "8": "mit Phosphat",
+      "9": "mit Süßungsmittel"
+    },
+    "allergens": {
+      "a": "glutenhaltiges Getreide",
+      "b": "Krebstiere",
+      "c": "Eier",
+      "d": "Fisch",
+      "e": "Erdnüsse",
+      "f": "Soja",
+      "g": "Milch / Laktose",
+      "h": "Schalenfrüchte (Nüsse)",
+      "i": "Sellerie",
+      "j": "Senf",
+      "k": "Sesam",
+      "l": "Sulfite",
+      "m": "Lupinen",
+      "n": "Weichtiere",
+      "o": "siehe Aushang im Restaurant"
+    }
+  },
+  "proteinIcons": {
+    "Vegetarisch": "leaf",
+    "Tofu": "tofu",
+    "Hähnchen": "chicken",
+    "Rindfleisch": "beef",
+    "Garnelen": "shrimp",
+    "Fisch": "fish",
+    "Ente": "duck"
+  },
+  "categories": [
+    {
+      "id": "vorspeisen",
+      "title": "Vorspeisen",
+      "intro": "Kleine Gerichte zum Teilen oder als Auftakt.",
+      "items": [
+        {
+          "no": 1,
+          "name": "Po Pia Thod",
+          "sub": "Frühlingsrollen",
+          "desc": "3 knusprige Frühlingsrollen, gefüllt mit frischem Gemüse und Glasnudeln, serviert mit süß-saurem Thai-Dip",
+          "codes": [
+            "2",
+            "4",
+            "a",
+            "c",
+            "f",
+            "g",
+            "k",
+            "o"
+          ],
+          "prices": [
+            {
+              "label": "Vegetarisch",
+              "price": 3.6
+            },
+            {
+              "label": "Rindfleisch",
+              "price": 4.9
+            }
+          ],
+          "tags": [
+            "vegetarisch",
+            "beliebt"
+          ]
+        },
+        {
+          "no": 2,
+          "name": "Gai Satay",
+          "sub": "3 Stück",
+          "desc": "Hähnchenbrustfilet-Spieße mit Curry gewürzt, serviert mit Erdnusssauce",
+          "codes": [],
+          "prices": [
+            {
+              "price": 5.9
+            }
+          ]
+        },
+        {
+          "no": 3,
+          "name": "Giaow Thod",
+          "sub": "6 Stück",
+          "desc": "Knusprig frittierte Wan-Tan",
+          "codes": [],
+          "prices": [
+            {
+              "price": 4.9
+            }
+          ]
+        },
+        {
+          "no": 4,
+          "name": "Pla Müg Thod",
+          "sub": "6 Stück",
+          "desc": "Knusprig frittierte Tintenfischringe",
+          "codes": [],
+          "prices": [
+            {
+              "price": 4.9
+            }
+          ],
+          "image": "gericht-pla-mueg-thod"
+        },
+        {
+          "no": 5,
+          "name": "Gung Thod",
+          "sub": "6 Stück",
+          "desc": "Knusprig frittierte Garnelen",
+          "codes": [],
+          "prices": [
+            {
+              "price": 5.9
+            }
+          ]
+        },
+        {
+          "no": 6,
+          "name": "Thaiboo Chicken Wings",
+          "desc": "Frittierte Chicken Wings, serviert mit süß-saurer Sauce",
+          "codes": [],
+          "prices": [
+            {
+              "price": 4.9
+            }
+          ]
+        },
+        {
+          "no": 7,
+          "name": "Tod Ruam",
+          "sub": "Gemischte Vorspeisenplatte",
+          "desc": "2 knusprige Frühlingsrollen, 2 Giaow Thod, 2 knusprige Garnelen und 2 knusprig frittierte Tintenfischringe",
+          "codes": [
+            "2",
+            "4",
+            "a",
+            "c",
+            "f",
+            "g",
+            "k",
+            "o"
+          ],
+          "prices": [
+            {
+              "price": 6.9
+            }
+          ],
+          "tags": [
+            "beliebt"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "suppen",
+      "title": "Suppen",
+      "intro": "Aromatisch, wärmend und mit Zutaten Ihrer Wahl.",
+      "priceTable": [
+        {
+          "label": "Vegetarisch",
+          "price": 4.5
+        },
+        {
+          "label": "Tofu",
+          "price": 4.5
+        },
+        {
+          "label": "Hähnchen",
+          "price": 4.5
+        },
+        {
+          "label": "Garnelen",
+          "price": 5.9
+        }
+      ],
+      "items": [
+        {
+          "no": 8,
+          "name": "Tom Kha",
+          "desc": "Die aromatische Thai-Suppe mit Kokosmilch, Pilzen, Zitronengras, Koriander, Karotten und Galgant",
+          "codes": [
+            "4",
+            "a",
+            "d",
+            "g",
+            "f"
+          ],
+          "tags": [
+            "vegetarisch",
+            "beliebt"
+          ]
+        },
+        {
+          "no": 9,
+          "name": "Tom Yum",
+          "desc": "Die klassische sauer-scharfe Thai-Suppe mit Pilzen, Zwiebeln, Zitronengras, Galgant und Kokosmilch",
+          "codes": [
+            "4",
+            "a",
+            "d",
+            "g",
+            "f"
+          ],
+          "tags": [
+            "vegetarisch",
+            "scharf"
+          ]
+        },
+        {
+          "no": 10,
+          "name": "Wan-Tan-Suppe",
+          "desc": "Würzige Thai-Suppe mit 4 Wan-Tan, Hähnchen und Gemüse",
+          "codes": [
+            "4",
+            "a",
+            "d",
+            "g",
+            "f"
+          ],
+          "prices": [
+            {
+              "price": 4.9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "currys",
+      "title": "Thai-Currys",
+      "intro": "Cremige Currys mit Kokosmilch und Gemüse, serviert mit Duftreis. Wählen Sie Ihre Hauptzutat.",
+      "priceTable": [
+        {
+          "label": "Vegetarisch",
+          "price": 8.5
+        },
+        {
+          "label": "Tofu",
+          "price": 9.5
+        },
+        {
+          "label": "Hähnchen",
+          "price": 9.5
+        },
+        {
+          "label": "Rindfleisch",
+          "price": 9.9
+        },
+        {
+          "label": "Garnelen",
+          "price": 11.5
+        },
+        {
+          "label": "Ente",
+          "price": 12.5
+        },
+        {
+          "label": "Fisch",
+          "price": 14.5
+        }
+      ],
+      "items": [
+        {
+          "no": 11,
+          "name": "Gaeng Ped",
+          "sub": "Rotes Curry",
+          "desc": "Cremiges rotes Thai-Curry mit Kokosmilch, Gemüse und Reis",
+          "codes": [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e",
+            "f",
+            "i"
+          ],
+          "tags": [
+            "vegetarisch",
+            "scharf"
+          ]
+        },
+        {
+          "no": 12,
+          "name": "Gaeng Gari",
+          "sub": "Gelbes Curry",
+          "desc": "Cremiges gelbes Thai-Curry mit Kokosmilch, Gemüse und Reis",
+          "codes": [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e",
+            "f",
+            "i"
+          ],
+          "tags": [
+            "vegetarisch"
+          ]
+        },
+        {
+          "no": 13,
+          "name": "Gaeng Kiow Wan",
+          "sub": "Grünes Curry",
+          "desc": "Cremiges grünes Thai-Curry mit Kokosmilch, Gemüse und Reis",
+          "codes": [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e",
+            "f",
+            "i"
+          ],
+          "tags": [
+            "vegetarisch",
+            "scharf",
+            "beliebt"
+          ],
+          "image": "gericht-gaeng-kiow-wan"
+        },
+        {
+          "no": 14,
+          "name": "Massaman",
+          "desc": "Das etwas andere Thai-Curry: mild, mit Kokosmilch, Karotten, Zwiebeln und Erdnüssen",
+          "codes": [
+            "a",
+            "c",
+            "d",
+            "e",
+            "f",
+            "g",
+            "h"
+          ],
+          "tags": [
+            "vegetarisch"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "nudeln",
+      "title": "Nudelgerichte",
+      "intro": "Aus dem Wok – mit Ei-, Glas- oder Reisnudeln. Wählen Sie Ihre Hauptzutat.",
+      "priceTable": [
+        {
+          "label": "Vegetarisch",
+          "price": 8.5
+        },
+        {
+          "label": "Tofu",
+          "price": 9.5
+        },
+        {
+          "label": "Hähnchen",
+          "price": 9.5
+        },
+        {
+          "label": "Rindfleisch",
+          "price": 9.9
+        },
+        {
+          "label": "Garnelen",
+          "price": 11.5
+        },
+        {
+          "label": "Ente",
+          "price": 12.5
+        }
+      ],
+      "items": [
+        {
+          "no": 15,
+          "name": "Pad Mie Luang",
+          "sub": "Eiernudeln",
+          "desc": "Gebratene Eiernudeln mit Gemüse in Sojasauce",
+          "codes": [
+            "2",
+            "4",
+            "a",
+            "c",
+            "f",
+            "g",
+            "o"
+          ],
+          "tags": [
+            "vegetarisch"
+          ]
+        },
+        {
+          "no": 16,
+          "name": "Pad Wun Sen",
+          "sub": "Glasnudeln",
+          "desc": "Gebratene Glasnudeln mit Gemüse und Ei in Sojasauce",
+          "codes": [
+            "2",
+            "4",
+            "a",
+            "c",
+            "f",
+            "g",
+            "o"
+          ],
+          "tags": [
+            "vegetarisch"
+          ]
+        },
+        {
+          "no": 17,
+          "name": "Pad Thai",
+          "sub": "Reisnudeln",
+          "desc": "Gebratene Reisnudeln in Tamarindensauce mit Ei und verschiedenem Gemüse",
+          "codes": [
+            "2",
+            "a",
+            "c",
+            "d",
+            "e",
+            "f",
+            "g"
+          ],
+          "tags": [
+            "vegetarisch",
+            "beliebt"
+          ],
+          "image": "gericht-pad-thai"
+        },
+        {
+          "no": 18,
+          "name": "Pad Sie Iew",
+          "desc": "Gebratene breite Reisnudeln in Sojasauce mit Ei und verschiedenem Gemüse",
+          "codes": [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e",
+            "f",
+            "i"
+          ],
+          "tags": [
+            "vegetarisch"
+          ]
+        },
+        {
+          "no": 19,
+          "name": "Ba Mie Gaeng",
+          "desc": "Eiernudeln in pikanter roter Currysauce mit Kokosmilch und Gemüse",
+          "codes": [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e",
+            "f",
+            "g",
+            "h"
+          ],
+          "tags": [
+            "vegetarisch",
+            "scharf"
+          ]
+        },
+        {
+          "no": 20,
+          "name": "Nudeln Thaiboo",
+          "desc": "Penne mit Hähnchen und verschiedenem Gemüse",
+          "codes": [],
+          "tags": []
+        },
+        {
+          "no": 21,
+          "name": "Kuay Tiaw Nua",
+          "desc": "Hausgemachte thailändische Reisnudelsuppe mit Sojasprossen und Rindfleisch",
+          "codes": [],
+          "prices": [
+            {
+              "price": 12.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "reis",
+      "title": "Wok-Gerichte mit Reis",
+      "intro": "Frisch aus dem Wok, serviert mit Duftreis. Wählen Sie Ihre Hauptzutat.",
+      "priceTable": [
+        {
+          "label": "Vegetarisch",
+          "price": 8.5
+        },
+        {
+          "label": "Tofu",
+          "price": 9.5
+        },
+        {
+          "label": "Hähnchen",
+          "price": 9.5
+        },
+        {
+          "label": "Rindfleisch",
+          "price": 9.9
+        },
+        {
+          "label": "Garnelen",
+          "price": 11.5
+        },
+        {
+          "label": "Ente",
+          "price": 12.5
+        }
+      ],
+      "items": [
+        {
+          "no": 22,
+          "name": "Pad Prik Gaeng",
+          "desc": "Pikante rote Currysauce mit Limettenblättern – scharf im Geschmack",
+          "codes": [
+            "2",
+            "4",
+            "a",
+            "c",
+            "d",
+            "f",
+            "o"
+          ],
+          "tags": [
+            "vegetarisch",
+            "scharf"
+          ]
+        },
+        {
+          "no": 23,
+          "name": "Pad King",
+          "desc": "Gebraten mit frischem Ingwer, Gemüse und Mu-Err-Pilzen",
+          "codes": [
+            "2",
+            "4",
+            "a",
+            "c",
+            "d",
+            "f",
+            "o"
+          ],
+          "tags": [
+            "vegetarisch"
+          ]
+        },
+        {
+          "no": 24,
+          "name": "Pad Priew Wan",
+          "desc": "Gemüse in schmackhafter süß-saurer Sauce",
+          "codes": [
+            "2",
+            "4",
+            "a",
+            "c",
+            "d",
+            "f",
+            "o"
+          ],
+          "tags": [
+            "vegetarisch"
+          ]
+        },
+        {
+          "no": 25,
+          "name": "Pad Med Mamuang Prik Pao",
+          "desc": "Gebraten mit Cashewnüssen und Gemüse",
+          "codes": [
+            "2",
+            "4",
+            "a",
+            "c",
+            "d",
+            "f",
+            "o"
+          ],
+          "tags": [
+            "vegetarisch",
+            "beliebt"
+          ]
+        },
+        {
+          "no": 26,
+          "name": "Pad Gra Pao",
+          "desc": "Gebraten mit Bambus, Chili, Zwiebeln und scharfem Thai-Basilikum",
+          "codes": [
+            "2",
+            "4",
+            "a",
+            "c",
+            "d",
+            "f",
+            "o"
+          ],
+          "tags": [
+            "vegetarisch",
+            "scharf"
+          ],
+          "extra": {
+            "name": "mit Spiegelei",
+            "price": 1.5
+          }
+        },
+        {
+          "no": 27,
+          "name": "Pad Pak Ruam Mid",
+          "desc": "Verschiedenes Gemüse, gebraten mit Austern- und Sojasauce",
+          "codes": [
+            "2",
+            "4",
+            "a",
+            "c",
+            "d",
+            "f",
+            "o"
+          ],
+          "tags": [
+            "vegetarisch"
+          ]
+        },
+        {
+          "no": 28,
+          "name": "Nua Pad Nam Man Hoy",
+          "desc": "Rindfleisch mit Champignons, Gemüse und Austernsauce",
+          "codes": [
+            "2",
+            "4",
+            "a",
+            "c",
+            "d",
+            "f",
+            "o"
+          ],
+          "prices": [
+            {
+              "price": 9.9
+            }
+          ]
+        },
+        {
+          "no": 29,
+          "name": "Thaiboo Pad Prik Curry",
+          "desc": "Rindfleisch, Hähnchen und Garnelen, gebraten mit rotem Curry und Gemüse – scharf",
+          "codes": [
+            "2",
+            "4",
+            "a",
+            "c",
+            "d",
+            "f",
+            "o"
+          ],
+          "prices": [
+            {
+              "price": 12.9
+            }
+          ],
+          "tags": [
+            "scharf",
+            "beliebt"
+          ]
+        },
+        {
+          "no": 30,
+          "name": "Lachs Teriyaki",
+          "desc": "Lachswürfel mit verschiedenem Gemüse in Teriyaki-Sauce, serviert mit Reis",
+          "codes": [],
+          "prices": [
+            {
+              "price": 13.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gebratener-reis",
+      "title": "Gebratener Reis",
+      "items": [
+        {
+          "no": 31,
+          "name": "Khao Pad",
+          "desc": "Gebratener Reis mit Ei und Gemüse",
+          "codes": [
+            "2",
+            "4",
+            "a",
+            "c",
+            "f",
+            "g",
+            "o"
+          ],
+          "prices": [
+            {
+              "label": "Vegetarisch",
+              "price": 8.5
+            },
+            {
+              "label": "Tofu",
+              "price": 9.5
+            },
+            {
+              "label": "Hähnchen",
+              "price": 9.5
+            },
+            {
+              "label": "Rindfleisch",
+              "price": 9.9
+            },
+            {
+              "label": "Ente",
+              "price": 12.5
+            }
+          ],
+          "tags": [
+            "vegetarisch"
+          ]
+        },
+        {
+          "no": 32,
+          "name": "Khao Pad Asia",
+          "desc": "Gebratener Reis mit Ei, Garnelen, Hähnchen und Gemüse",
+          "codes": [],
+          "prices": [
+            {
+              "price": 12.5
+            }
+          ],
+          "tags": [
+            "beliebt"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "salate",
+      "title": "Salate",
+      "items": [
+        {
+          "no": 33,
+          "name": "Yam Wun Sen",
+          "sub": "Glasnudelsalat",
+          "desc": "Erfrischender Glasnudelsalat mit ordentlich Chili, Lauch, Tomaten und Zwiebeln",
+          "codes": [
+            "2",
+            "a",
+            "d",
+            "i",
+            "k"
+          ],
+          "prices": [
+            {
+              "label": "Vegetarisch",
+              "price": 7.9
+            },
+            {
+              "label": "Tofu",
+              "price": 8.5
+            },
+            {
+              "label": "Hähnchen",
+              "price": 9.5
+            },
+            {
+              "label": "Garnelen",
+              "price": 11.5
+            }
+          ],
+          "tags": [
+            "vegetarisch",
+            "scharf"
+          ]
+        },
+        {
+          "no": 34,
+          "name": "Thaiboo Salat",
+          "desc": "Gemischter Salat mit hausgemachtem Dressing",
+          "codes": [],
+          "prices": [
+            {
+              "price": 11.5
+            }
+          ],
+          "tags": [
+            "vegetarisch"
+          ]
+        },
+        {
+          "no": 35,
+          "name": "Yam Nua",
+          "sub": "Rindfleischsalat",
+          "desc": "Rindfleischsalat mit verschiedenem Gemüse und hausgemachter Sauce",
+          "codes": [],
+          "prices": [
+            {
+              "price": 12.0
+            }
+          ],
+          "tags": [
+            "beliebt"
+          ],
+          "image": "gericht-yam-nua"
+        }
+      ]
+    },
+    {
+      "id": "nachtisch",
+      "title": "Nachtisch",
+      "items": [
+        {
+          "no": 36,
+          "name": "2 Kugeln Eis nach Wahl",
+          "desc": "Vanille, Schokolade oder Erdbeere",
+          "codes": [],
+          "prices": [
+            {
+              "price": 4.9
+            }
+          ],
+          "extra": {
+            "name": "mit Sahne",
+            "price": 0.5
+          },
+          "tags": [
+            "vegetarisch"
+          ]
+        },
+        {
+          "no": 37,
+          "name": "Apfeltasche mit Vanilleeis",
+          "desc": "Warme Apfeltasche mit einer Kugel Vanilleeis",
+          "codes": [],
+          "prices": [
+            {
+              "price": 5.9
+            }
+          ],
+          "tags": [
+            "vegetarisch"
+          ]
+        },
+        {
+          "no": 38,
+          "name": "Gebackene Banane",
+          "sub": "mit Vanilleeis",
+          "desc": "Knusprig frittierte Bananen im Teigmantel mit Vanilleeis",
+          "codes": [],
+          "prices": [
+            {
+              "price": 5.9
+            }
+          ],
+          "tags": [
+            "vegetarisch",
+            "beliebt"
+          ],
+          "image": "gericht-gebackene-banane"
+        }
+      ]
+    }
+  ],
+  "extras": {
+    "title": "Extras & Zusätze",
+    "intro": "Zu jedem Gericht dazu bestellbar.",
+    "items": [
+      {
+        "name": "Gemüse",
+        "price": 2.5
+      },
+      {
+        "name": "Tofu",
+        "price": 2.5
+      },
+      {
+        "name": "Hähnchen",
+        "price": 3.0
+      },
+      {
+        "name": "Rindfleisch",
+        "price": 3.5
+      },
+      {
+        "name": "Garnelen",
+        "price": 3.5
+      },
+      {
+        "name": "Ente",
+        "price": 4.5
+      },
+      {
+        "name": "Currysauce",
+        "price": 3.0
+      },
+      {
+        "name": "Cashewnüsse",
+        "price": 3.0
+      },
+      {
+        "name": "Reis / Nudeln",
+        "price": 3.0
+      }
+    ]
+  }
+}

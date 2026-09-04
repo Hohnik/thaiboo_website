@@ -1,0 +1,12 @@
+{
+  "name": "Thaiboo Moosburg",
+  "short_name": "Thaiboo",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#fbf6ee",
+  "theme_color": "#fbf6ee",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
