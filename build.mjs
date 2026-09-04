@@ -15,6 +15,10 @@ const SRC = path.join(ROOT, 'src');
 const DIST = path.join(ROOT, 'dist');
 const CACHE = path.join(ROOT, '.cache', 'img');
 const args = new Set(process.argv.slice(2));
+// Deployment under a sub-path (e.g. GitHub Pages project site https://user.github.io/repo/):
+//   BASE_PATH=/repo SITE_URL=https://user.github.io/repo node build.mjs
+const BASE = (process.env.BASE_PATH || '').trim().replace(/\/+$/, '');
+const SITE_URL = (process.env.SITE_URL || '').trim().replace(/\/+$/, '');
 
 const WIDTHS = [320, 480, 640, 960, 1280, 1600];
 const readJSON = async (p) => JSON.parse(await fs.readFile(p, 'utf8'));
@@ -87,6 +91,7 @@ async function buildPages(manifest, assets) {
   const { picture, imgUrl } = await import(pathToFileURL(path.join(SRC, 'lib', 'html.js')).href + `?t=${Date.now()}`);
   const data = {};
   for (const f of ['site', 'config', 'menu', 'drinks', 'legend', 'content', 'legal']) data[f] = await readJSON(path.join(SRC, 'data', `${f}.json`));
+  if (SITE_URL) data.config.url = SITE_URL;
   const ctx = { ...data, assets, manifest, img: (name, opts) => picture(manifest, name, opts), imgUrl: (name, w) => imgUrl(manifest, name, w) };
 
   const pagesDir = path.join(SRC, 'pages');
@@ -128,12 +133,47 @@ async function buildAssets() {
   return { css: `/assets/css/${cssName}`, js: `/assets/js/${jsName}` };
 }
 
+/* ---------- sub-path support ---------- */
+// The templates emit root-relative URLs ("/assets/…", "/speisekarte/"). When BASE_PATH is set,
+// prefix them so the site also works from a sub-directory such as https://user.github.io/repo/.
+function rewriteBase(text, ext) {
+  if (!BASE) return text;
+  const notProtocolRelative = '(?!/)';
+  if (ext === '.html' || ext === '.htm') {
+    return text
+      .replace(new RegExp(`\\b(href|src|data-lightbox|action|poster)="/${notProtocolRelative}`, 'g'), `$1="${BASE}/`)
+      .replace(/\bsrcset="([^"]*)"/g, (m, v) => `srcset="${v.replace(/(^|,\s*)\/(?!\/)/g, `$1${BASE}/`)}"`)
+      .replace(/url\('\/(?!\/)/g, `url('${BASE}/`);
+  }
+  if (ext === '.css') return text.replace(/url\((['"]?)\/(?!\/)/g, `url($1${BASE}/`);
+  if (ext === '.webmanifest' || ext === '.json') return text.replace(/("(?:src|start_url)":\s*")\/(?!\/)/g, `$1${BASE}/`);
+  if (ext === '.yml' || ext === '.yaml') return text.replace(/^(\s*logo_url:\s*)\/(?!\/)/m, `$1${BASE}/`).replace(/^(\s*(?:site_url|display_url):\s*).*$/gm, `$1${SITE_URL || '/'}`);
+  return text;
+}
+async function applyBase() {
+  if (!BASE) return;
+  const walk = async (dir) => {
+    for (const entry of await fs.readdir(dir, { withFileTypes: true })) {
+      const p = path.join(dir, entry.name);
+      if (entry.isDirectory()) { await walk(p); continue; }
+      const ext = path.extname(p);
+      if (!['.html', '.css', '.webmanifest', '.yml', '.yaml'].includes(ext)) continue;
+      const text = await fs.readFile(p, 'utf8');
+      const out = rewriteBase(text, ext);
+      if (out !== text) await fs.writeFile(p, out);
+    }
+  };
+  await walk(DIST);
+}
+
 async function build() {
   const t0 = Date.now();
   await fs.rm(DIST, { recursive: true, force: true });
   await ensureDir(DIST);
   const [manifest, assets] = await Promise.all([buildImages(), buildAssets()]);
   const pages = await buildPages(manifest, assets);
+  await applyBase();
+  if (BASE) console.log(`  base path: ${BASE}${SITE_URL ? `  site url: ${SITE_URL}` : ''}`);
   console.log(`✔ built ${pages.length} pages, ${Object.keys(manifest).length} images in ${Date.now() - t0} ms`);
 }
 

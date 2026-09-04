@@ -12,8 +12,10 @@ const htmlFiles = [];
 const walk = (d) => { for (const f of fs.readdirSync(d)) { const p = path.join(d, f); fs.statSync(p).isDirectory() ? walk(p) : p.endsWith('.html') && htmlFiles.push(p); } };
 walk(DIST);
 
+const BASE = (process.env.BASE_PATH || '').trim().replace(/\/+$/, '');
 const exists = (url) => {
-  const clean = url.split('#')[0].split('?')[0];
+  let clean = url.split('#')[0].split('?')[0];
+  if (BASE) { if (!clean.startsWith(BASE + '/') && clean !== BASE) return false; clean = clean.slice(BASE.length); }
   if (!clean) return true;
   const p = path.join(DIST, clean);
   return fs.existsSync(p) && (fs.statSync(p).isFile() || fs.existsSync(path.join(p, 'index.html')));

@@ -15,15 +15,13 @@ Die Einrichtung ist einmalig und dauert etwa 30 Minuten. Alles ist kostenlos.
    öffentliche Repositories kostenlos). Alle Inhalte stehen ohnehin auf der Website; Geheimnisse
    liegen nicht im Repository.
 2. Im Repository: **Settings → Pages → Build and deployment → Source: „GitHub Actions“** wählen.
-3. Den Branch `claude/thaiboo-moosburg-redesign-u6w0t3` nach `main` mergen (Pull Request).
-   Der Workflow `.github/workflows/deploy.yml` baut die Seite und veröffentlicht sie.
-   Die Seite ist danach unter `https://hohnik.github.io/thaiboo_website/` erreichbar.
-
-   > Hinweis: Unter der `github.io`-Adresse liegt die Seite in einem Unterordner, deshalb laden dort
-   > Bilder, Schriften und Stylesheet nicht (die Seite verwendet absolute Pfade wie `/assets/…`).
-   > Das ist erwartbar und nur ein Zwischenzustand: Sobald die eigene Domain (nächster Schritt)
-   > eingerichtet ist, stimmt alles. Ob der Build funktioniert, sieht man vorher schon unter
-   > *Actions* am grünen Haken.
+3. Der Workflow `.github/workflows/deploy.yml` baut die Seite bei jedem Push und veröffentlicht den
+   Standard-Branch (derzeit `claude/thaiboo-moosburg-redesign-u6w0t3`; nach einem Umzug auf `main`
+   automatisch `main`). Beim ersten Lauf schaltet er GitHub Pages selbst ein; sollte das an fehlenden
+   Rechten scheitern, einmalig Schritt 2 von Hand ausführen und den Workflow erneut starten.
+   Die Seite ist danach unter **https://hohnik.github.io/thaiboo_website/** erreichbar – der Build
+   erkennt den Unterordner automatisch und passt alle Pfade an. Auch ohne eigene Domain ist die
+   Seite damit vollständig nutzbar.
 
 4. **Eigene Domain:** Settings → Pages → „Custom domain“: `thaiboo-moosburg.de` eintragen und
    speichern. Beim Domain-Anbieter (dort, wo thaiboo-moosburg.de registriert ist) diese DNS-Einträge

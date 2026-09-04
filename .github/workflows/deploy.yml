@@ -1,5 +1,6 @@
-# Baut die Website bei jedem Push und veröffentlicht den main-Branch auf GitHub Pages.
-# Einrichtung: Repository → Settings → Pages → Source: "GitHub Actions" (siehe docs/CMS-EINRICHTUNG.md)
+# Baut die Website bei jedem Push und veröffentlicht sie auf GitHub Pages.
+# Veröffentlicht wird der Standard-Branch – oder jeder Branch, wenn der Workflow manuell gestartet wird
+# (Actions → "Build & Deploy" → "Run workflow").
 name: Build & Deploy
 
 on:
@@ -10,10 +11,12 @@ on:
 
 permissions:
   contents: read
+  pages: write
+  id-token: write
 
 concurrency:
-  group: pages-${{ github.ref }}
-  cancel-in-progress: true
+  group: pages
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -25,20 +28,27 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      # Ermittelt die Pages-URL (Unterordner bei user.github.io/repo, sonst die eigene Domain)
+      # und schaltet GitHub Pages ein, falls noch nicht geschehen.
+      - id: pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
       - run: npm run build
+        env:
+          BASE_PATH: ${{ steps.pages.outputs.base_path }}
+          SITE_URL: ${{ steps.pages.outputs.base_url }}
       - run: npm run check
+        env:
+          BASE_PATH: ${{ steps.pages.outputs.base_path }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
 
   deploy:
-    # Nur der main-Branch geht live.
-    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref_name == github.event.repository.default_branch)
     needs: build
     runs-on: ubuntu-latest
-    permissions:
-      pages: write
-      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

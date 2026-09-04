@@ -105,9 +105,13 @@ npm run dev          # Build + Watch + Server auf http://localhost:4321 (Admin: 
 ```
 
 **GitHub Pages (kostenlos, empfohlen):** Der Workflow `.github/workflows/deploy.yml` baut bei jedem Push,
-führt die Prüfung aus und veröffentlicht den `main`-Branch auf GitHub Pages. Einmalig in den
-Repository-Einstellungen *Pages → Source: GitHub Actions* wählen und die Domain eintragen
-(Details in `docs/CMS-EINRICHTUNG.md`). Pull Requests und andere Branches werden nur gebaut und geprüft.
+führt die Prüfung aus und veröffentlicht den Standard-Branch auf GitHub Pages – aktuell unter
+https://hohnik.github.io/thaiboo_website/. Der Build erkennt über `actions/configure-pages`, ob die Seite
+in einem Unterordner oder unter einer eigenen Domain läuft, und setzt `BASE_PATH`/`SITE_URL` entsprechend
+(lokal: `BASE_PATH=/thaiboo_website SITE_URL=https://hohnik.github.io/thaiboo_website npm run build`).
+Eigene Domain: in den Pages-Einstellungen eintragen, Details in `docs/CMS-EINRICHTUNG.md`.
+Andere Branches und Pull Requests werden nur gebaut und geprüft; über *Actions → Run workflow* lässt sich
+jeder Branch manuell veröffentlichen.
 
 `dist/` ist reines HTML/CSS/JS und läuft ebenso auf jedem anderen Webspace (FTP-Upload), bei
 Netlify/Vercel/Cloudflare Pages (Build-Command `npm run build`, Output `dist`).
