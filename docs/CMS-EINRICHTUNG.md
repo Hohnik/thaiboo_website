@@ -19,10 +19,11 @@ Die Einrichtung ist einmalig und dauert etwa 30 Minuten. Alles ist kostenlos.
    Der Workflow `.github/workflows/deploy.yml` baut die Seite und veröffentlicht sie.
    Die Seite ist danach unter `https://hohnik.github.io/thaiboo_website/` erreichbar.
 
-   > Hinweis: Solange die Seite unter dem `github.io`-Pfad läuft, funktionieren absolute Pfade
-   > (`/assets/...`) nicht. Deshalb bitte gleich die eigene Domain einrichten (nächster Schritt).
-   > Bis dahin kann man zum Testen in `src/data/config.json` nichts ändern müssen – die Domain ist
-   > die eigentliche Adresse.
+   > Hinweis: Unter der `github.io`-Adresse liegt die Seite in einem Unterordner, deshalb laden dort
+   > Bilder, Schriften und Stylesheet nicht (die Seite verwendet absolute Pfade wie `/assets/…`).
+   > Das ist erwartbar und nur ein Zwischenzustand: Sobald die eigene Domain (nächster Schritt)
+   > eingerichtet ist, stimmt alles. Ob der Build funktioniert, sieht man vorher schon unter
+   > *Actions* am grünen Haken.
 
 4. **Eigene Domain:** Settings → Pages → „Custom domain“: `thaiboo-moosburg.de` eintragen und
    speichern. Beim Domain-Anbieter (dort, wo thaiboo-moosburg.de registriert ist) diese DNS-Einträge
